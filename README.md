@@ -8,7 +8,7 @@
 
 |[팀장] 손성진|[팀원] 김선주|[팀원] 홍다응|[팀원] 황태영|
 |:----:|:-----:|:----:|----:|
-|<img src="https://avatars.githubusercontent.com/u/46017029?v=4" alt="avatar" height="150px" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/48196352?v=4" alt="avatar" height="150px" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/76833697?v=4" alt="avatar" height="150px" width="150px" /> |
+|<img src="https://avatars.githubusercontent.com/u/48196352?v=4" alt="avatar" height="150px" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/66668478?v=4" alt="avatar" height="150px" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/79740505?v=4" alt="avatar" height="150px" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/89963995?v=4" alt="avatar" height="150px" width="150px" /> |
 |[ssj9398](https://github.com/ssj9398)|[sunny-yo](https://github.com/sunny-yo)|[Allaccept12](https://github.com/Allaccept12)|[hty0525](https://github.com/hty0525)|
 
 <br>
@@ -16,9 +16,9 @@
 ---
 
 <h3><b>🎫 프로젝트 소개 🎫</b></h3>
-- "프로젝트 하고 싶은데 사람을 어디서 구하지??"
-- 막상 사람을 구해도 중간에 나가 버리면 답없던데 어디가 좋을까
-- 카카오로그인만 가능하게 해 프로젝트 도중 탈주하면 경고 or벤
+- "프로젝트 하고 싶은데 사람을 어디서 구하지??"  </br>
+- 막상 사람을 구해도 중간에 나가 버리면 답없던데 어디가 좋을까    </br>
+- 카카오로그인만 가능하게 해 프로젝트 도중 탈주하면 경고 or벤   </br>
 <br><br> 
 
 ---
