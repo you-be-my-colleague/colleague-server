@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @Id @GeneratedValue
-    @Column("comment_id")
+    @Column(name = "comment_id")
     private Long id;
 
     private String Content;
@@ -19,10 +19,20 @@ public class Comment {
     private LocalDateTime commentDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn("member_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn("post_id")
+    @JoinColumn(name = "post_id")
     private Post post;
+
+    //==연관관계 메서드==//
+    public void setMember(Member member) {
+        this.member = member;
+        member.getComments().add(this);
+    }
+    public void setPost(Post post) {
+        this.post = post;
+        post.getComment().add(this);
+    }
 }

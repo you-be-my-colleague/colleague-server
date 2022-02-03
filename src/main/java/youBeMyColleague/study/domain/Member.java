@@ -24,12 +24,12 @@ public class Member {
     private String img; //프로필 이미지
 
     @Embedded
-    private Stack stack;
+    private TechStack stack;
 
-    @OneToMany(mappedBy = "post_id")
+    @OneToMany(mappedBy = "member")
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "commnet_id")
+    @OneToMany(mappedBy = "member")
     private List<Comment> comments;
 
 
