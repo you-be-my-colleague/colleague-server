@@ -1,20 +1,25 @@
 package youBeMyColleague.study.domain;
 
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
 
     @Id @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
 
-    private String Content;
+    @Column(nullable = false)
+    private String content;
 
     private LocalDateTime commentDate;
 
@@ -26,6 +31,12 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Builder
+    public Comment(String content, LocalDateTime commentDate) {
+        this.content = content;
+        this.commentDate = commentDate;
+    }
+
     //==연관관계 메서드==//
     public void setMember(Member member) {
         this.member = member;
@@ -33,6 +44,22 @@ public class Comment {
     }
     public void setPost(Post post) {
         this.post = post;
-        post.getComment().add(this);
     }
+
+    //==비즈니스
+    /**
+     * 댓글 수정
+     */
+    public void updateComment() {
+
+    }
+
+    /**
+     * 댓글 삭제
+     */
+    public void deleteComment() {
+
+    }
+
+
 }
