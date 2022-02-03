@@ -45,11 +45,16 @@ public class Post {
     @Column(columnDefinition = "integer default 0")
     private int likes;
 
+    @Column(columnDefinition = "integer default 0")
+    private int commentCount;
+
     private LocalDateTime postDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
@@ -89,10 +94,12 @@ public class Post {
     public void addComment(Comment comment) {
         this.comments.add(comment);
         comment.setPost(this);
+        this.commentCount += 1;
     }
     public void deleteComment(Comment deleteComment) {
         this.comments.remove(deleteComment);
         deleteComment.setPost(null);
+        this.commentCount -= 1;
     }
 
 }
