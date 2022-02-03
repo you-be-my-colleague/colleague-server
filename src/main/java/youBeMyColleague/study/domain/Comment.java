@@ -50,15 +50,8 @@ public class Comment {
     /**
      * 댓글 수정
      */
-    public void updateComment() {
-
-    }
-
-    /**
-     * 댓글 삭제
-     */
-    public void deleteComment() {
-
+    public void updateComment(String content) {
+        this.content = content;
     }
 
 

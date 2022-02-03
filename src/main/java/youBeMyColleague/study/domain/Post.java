@@ -64,8 +64,10 @@ public class Post {
         this.postStatus = postStatus;
         this.postDate = postDate;
         this.member = member;
+        member.getPosts().add(this);
     }
 
+    //==비즈니스
     /**
      * 게시글 수정
      */
@@ -84,11 +86,6 @@ public class Post {
     }
 
     //==연관관계 메서드
-    public void setMember(Member member) {
-        this.member = member;
-        member.getPosts().add(this);
-    }
-
     public void addComment(Comment comment) {
         this.comments.add(comment);
         comment.setPost(this);
