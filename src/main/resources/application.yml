@@ -1,0 +1,24 @@
+# MySQL 설정
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # DB Source
+    url: jdbc:mysql://localhost:3306/youBeMyCollegue?useSSL=false&allowPublicKeyRetrieval=true
+    #jdbc:mysql://localhost:3306/reactspring?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    #어떤게용?
+    # DB username
+    username: root
+    # DB password
+    password: dkemf21518@
+  jpa:
+    #show-sql: true
+    hibernate:
+      ddl-auto: create
+      SQL: debug
+      generate-ddl: true
+      format_sql: true
+      default_batch_fetch_size: 100
+
+#      type:
+#        descrptor:
+#          sql:trace
