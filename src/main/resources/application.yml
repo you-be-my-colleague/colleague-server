@@ -14,9 +14,9 @@ spring:
       ddl-auto: update
     properties:
       SQL: debug
-        generate-ddl: true
-        format_sql: true
-        default_batch_fetch_size: 100
+      generate-ddl: true
+      format_sql: true
+      default_batch_fetch_size: 100
 
 logging:
   level:
