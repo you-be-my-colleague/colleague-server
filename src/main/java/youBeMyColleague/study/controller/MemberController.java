@@ -35,4 +35,9 @@ public class MemberController {
     public Member selectMember(@PathVariable String email){
         return memberRepository.findByEmail(email);
     }
+
+    @DeleteMapping("/my-page/{email}")
+    public String deleteMember(@PathVariable String email){
+        memberService.DeleteMember(email);
+        return "삭제 완료";}
 }
