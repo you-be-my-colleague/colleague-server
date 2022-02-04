@@ -18,7 +18,7 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public Member SignMember(@RequestBody MemberRequestDto memberRequestDto){
 
         TechStack techStack = new TechStack(memberRequestDto.getStack().getStack1(), memberRequestDto.getStack().getStack2(), memberRequestDto.getStack().getStack3(), memberRequestDto.getStack().getStack4());
@@ -31,7 +31,7 @@ public class MemberController {
         return member;
     }
 
-    @GetMapping("/myPage/{email}")
+    @GetMapping("/my-page/{email}")
     public Member selectMember(@PathVariable String email){
         return memberRepository.findByEmail(email);
     }
