@@ -34,7 +34,7 @@ public class Post {
     private String gitAddress;
 
     @Enumerated(EnumType.STRING)
-    private recruitmentStatus postStatus;
+    private RecruitmentStatus postStatus;
 
     @Column(columnDefinition = "integer default 0")
     private int views;
@@ -51,14 +51,12 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-
-
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
 
     @Builder
-    public Post(Member member,String title, String content, TechStack stack, String gitAddress, recruitmentStatus postStatus, LocalDateTime postDate) {
+    public Post(Member member, String title, String content, TechStack stack, String gitAddress, RecruitmentStatus postStatus, LocalDateTime postDate) {
         this.title = title;
         this.content = content;
         this.stack = stack;
@@ -83,7 +81,7 @@ public class Post {
     /**
      * 게시글 마감
      */
-    public void closePost(recruitmentStatus postStatus) {
+    public void closePost(RecruitmentStatus postStatus) {
         this.postStatus = postStatus;
     }
 
