@@ -5,13 +5,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.tomcat.jni.Local;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -37,13 +34,16 @@ public class Post {
     private String gitAddress;
 
     @Enumerated(EnumType.STRING)
-    private recruitmentStatus postStatus;
+    private RecruitmentStatus postStatus;
 
     @Column(columnDefinition = "integer default 0")
     private int views;
 
     @Column(columnDefinition = "integer default 0")
     private int likes;
+
+    @Column(columnDefinition = "integer default 0")
+    private int commentCount;
 
     private LocalDateTime postDate;
 
@@ -56,7 +56,7 @@ public class Post {
 
 
     @Builder
-    public Post(Member member,String title, String content, TechStack stack, String gitAddress, recruitmentStatus postStatus, LocalDateTime postDate) {
+    public Post(Member member, String title, String content, TechStack stack, String gitAddress, RecruitmentStatus postStatus, LocalDateTime postDate) {
         this.title = title;
         this.content = content;
         this.stack = stack;
@@ -64,8 +64,10 @@ public class Post {
         this.postStatus = postStatus;
         this.postDate = postDate;
         this.member = member;
+        member.getPosts().add(this);
     }
 
+    //==비즈니스
     /**
      * 게시글 수정
      */
@@ -79,23 +81,20 @@ public class Post {
     /**
      * 게시글 마감
      */
-    public void closePost(recruitmentStatus postStatus) {
+    public void closePost(RecruitmentStatus postStatus) {
         this.postStatus = postStatus;
     }
 
     //==연관관계 메서드
-    public void setMember(Member member) {
-        this.member = member;
-        member.getPosts().add(this);
-    }
-
     public void addComment(Comment comment) {
         this.comments.add(comment);
         comment.setPost(this);
+        this.commentCount += 1;
     }
     public void deleteComment(Comment deleteComment) {
         this.comments.remove(deleteComment);
         deleteComment.setPost(null);
+        this.commentCount -= 1;
     }
 
 }
