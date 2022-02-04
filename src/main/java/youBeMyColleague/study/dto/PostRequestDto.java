@@ -3,7 +3,6 @@ package youBeMyColleague.study.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import youBeMyColleague.study.domain.TechStack;
 
 @Data
 @AllArgsConstructor
