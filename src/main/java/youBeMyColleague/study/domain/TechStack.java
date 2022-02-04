@@ -18,8 +18,4 @@ public class TechStack {
 
     protected TechStack() {
     }
-
-    public static void main(String[] args) {
-
-    }
 }
