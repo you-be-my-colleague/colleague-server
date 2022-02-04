@@ -23,7 +23,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public void createPost(PostRequestDto postRequestDto, Member member) {
+    public Post createPost(PostRequestDto postRequestDto, Member member) {
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
@@ -33,7 +33,9 @@ public class PostService {
                 .postStatus(RecruitmentStatus.CONTINUE)
                 .member(member)
                 .build();
-        postRepository.save(post);
+        return postRepository.save(post);
+
+
     }
 
 
