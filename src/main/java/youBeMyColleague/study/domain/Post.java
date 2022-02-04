@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import youBeMyColleague.study.dto.PostRequestDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -66,16 +67,19 @@ public class Post {
         this.member = member;
         member.getPosts().add(this);
     }
+    public void setViews() {
+        this.views += 1;
+    }
 
     //==비즈니스
     /**
      * 게시글 수정
      */
-    public void updatePost(String title, String content, TechStack stack, String gitAddress) {
-        this.title = title;
-        this.content = content;
-        this.stack = stack;
-        this.gitAddress = gitAddress;
+    public void updatePost(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
+        this.stack = postRequestDto.getStack();
+        this.gitAddress = postRequestDto.getGitAddress();
     }
 
     /**
@@ -95,6 +99,13 @@ public class Post {
         this.comments.remove(deleteComment);
         deleteComment.setPost(null);
         this.commentCount -= 1;
+    }
+
+    public void updatePostStatus() {
+        if (getPostStatus() == RecruitmentStatus.COMPLETE) {
+            throw new IllegalStateException("이미 마감된 모임 입니다.");
+        }
+        this.postStatus = RecruitmentStatus.COMPLETE;
     }
 
 }
