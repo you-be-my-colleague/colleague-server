@@ -11,11 +11,15 @@ import javax.persistence.Embeddable;
 @AllArgsConstructor
 public class TechStack {
 
-    private String statck1;
-    private String statck2;
-    private String statck3;
-    private String statck4;
+    private String stack1;
+    private String stack2;
+    private String stack3;
+    private String stack4;
 
     protected TechStack() {
+    }
+
+    public static void main(String[] args) {
+
     }
 }
