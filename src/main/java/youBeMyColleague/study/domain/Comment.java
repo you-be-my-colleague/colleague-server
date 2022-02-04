@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import youBeMyColleague.study.dto.CommentRequestDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -50,8 +51,9 @@ public class Comment {
     /**
      * 댓글 수정
      */
-    public void updateComment(String content) {
-        this.content = content;
+    public void updateComment(CommentRequestDto commentRequestDto) {
+        this.content = commentRequestDto.getContent();
+        this.commentDate = LocalDateTime.now();
     }
 
 

@@ -20,6 +20,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final CommentService commentService;
 
     @Transactional
     public Post createPost(PostRequestDto postRequestDto, Member member) {
@@ -34,20 +35,19 @@ public class PostService {
                 .build();
         return postRepository.save(post);
     }
-
+    //게시글 상세
     public Post findPost(Long postId) {
         return postRepository.findById(postId).get();
     }
-
+    //전체 게시글 불러오기
     public List<Post> findAllPost() {
         return postRepository.findAll();
     }
 
     @Transactional
-    public Post updatePost(Long postId, PostRequestDto postRequestDto) {
+    public void updatePost(Long postId, PostRequestDto postRequestDto) {
         Optional<Post> post = postRepository.findById(postId);
         post.get().updatePost(postRequestDto);
-        return post.get();
     }
     @Transactional
     public void updatePostStatus(Long postId) {

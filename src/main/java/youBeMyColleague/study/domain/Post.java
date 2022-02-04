@@ -80,13 +80,16 @@ public class Post {
         this.content = postRequestDto.getContent();
         this.stack = postRequestDto.getStack();
         this.gitAddress = postRequestDto.getGitAddress();
+        this.postDate = LocalDateTime.now();
     }
-
     /**
-     * 게시글 마감
+     * 게시글 상태 수정
      */
-    public void closePost(RecruitmentStatus postStatus) {
-        this.postStatus = postStatus;
+    public void updatePostStatus() {
+        if (getPostStatus() == RecruitmentStatus.COMPLETE) {
+            throw new IllegalStateException("이미 마감된 모임 입니다.");
+        }
+        this.postStatus = RecruitmentStatus.COMPLETE;
     }
 
     //==연관관계 메서드
@@ -101,12 +104,7 @@ public class Post {
         this.commentCount -= 1;
     }
 
-    public void updatePostStatus() {
-        if (getPostStatus() == RecruitmentStatus.COMPLETE) {
-            throw new IllegalStateException("이미 마감된 모임 입니다.");
-        }
-        this.postStatus = RecruitmentStatus.COMPLETE;
-    }
+
 
 }
 
