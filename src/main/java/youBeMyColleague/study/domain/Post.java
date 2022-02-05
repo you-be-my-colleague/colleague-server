@@ -46,6 +46,10 @@ public class Post {
     @Column(columnDefinition = "integer default 0")
     private int commentCount;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "wishList_id")
+    private WishList wishList;
+
     private LocalDateTime postDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

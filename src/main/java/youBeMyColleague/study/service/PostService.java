@@ -44,11 +44,14 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    //게시글 수정
     @Transactional
     public void updatePost(Long postId, PostRequestDto postRequestDto) {
         Optional<Post> post = postRepository.findById(postId);
         post.get().updatePost(postRequestDto);
     }
+
+    //게시글 상태 수정
     @Transactional
     public void updatePostStatus(Long postId) {
         Optional<Post> post = postRepository.findById(postId);

@@ -6,11 +6,12 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class wishList {
+public class WishList {
     @Id @GeneratedValue
+    @Column(name = "wishList_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(mappedBy = "wishList",fetch = FetchType.LAZY)
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
