@@ -3,8 +3,11 @@ package youBeMyColleague.study.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,9 @@ public class Member {
     private String email;
 
     private String img;
+
+    @CreatedDate
+    private String createDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
 
     @Embedded
     private TechStack stack;
