@@ -89,11 +89,8 @@ public class Post {
     /**
      * 게시글 상태 수정
      */
-    public void updatePostStatus() {
-        if (getPostStatus() == RecruitmentStatus.COMPLETE) {
-            throw new IllegalStateException("이미 마감된 모임 입니다.");
-        }
-        this.postStatus = RecruitmentStatus.COMPLETE;
+    public void updatePostStatus(PostRequestDto postRequestDto) {
+        this.postStatus = postRequestDto.getRecruitmentStatus();
     }
 
     //==연관관계 메서드

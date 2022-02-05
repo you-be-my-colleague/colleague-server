@@ -24,6 +24,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
+    //코멘트 만들기
     @Transactional
     public void createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
         Optional<Post> findPost = postRepository.findById(postId);
@@ -36,6 +37,7 @@ public class CommentService {
         findPost.get().addComment(comment);
         findMember.get().addComment(comment);
     }
+    //코멘트 삭제
     @Transactional
     public void deleteComment(Long commentId,Long postId) {
         Optional<Comment> findComment = commentRepository.findById(commentId);
@@ -43,6 +45,7 @@ public class CommentService {
         findPost.get().deleteComment(findComment.get());
     }
 
+    //코멘트 수정
     @Transactional
     public void updateComment(Long commentId,CommentRequestDto commentRequestDto) {
         commentRepository.findById(commentId).get().updateComment(commentRequestDto);
