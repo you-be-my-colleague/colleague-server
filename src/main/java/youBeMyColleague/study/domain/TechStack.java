@@ -11,10 +11,10 @@ import javax.persistence.Embeddable;
 @AllArgsConstructor
 public class TechStack {
 
-    private String stack1;
-    private String stack2;
-    private String stack3;
-    private String stack4;
+    private Boolean python;
+    private Boolean spring;
+    private Boolean react;
+    private Boolean node;
 
     protected TechStack() {
     }
