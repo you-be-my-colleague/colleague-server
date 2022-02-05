@@ -25,6 +25,7 @@ public class MemberController {
         member.setName(memberRequestDto.getName());
         member.setEmail(memberRequestDto.getEmail());
         member.setImg(memberRequestDto.getImg());
+        member.setRole("USER");
         member.setStack(techStack);
         memberService.join(member);
         return member;
