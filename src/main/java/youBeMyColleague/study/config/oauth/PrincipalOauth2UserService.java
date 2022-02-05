@@ -6,6 +6,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import youBeMyColleague.study.config.oauth.provider.GoogleUserInfo;
+import youBeMyColleague.study.config.oauth.provider.OAuth2UserInfo;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.repository.MemberRepository;
 
@@ -23,9 +25,16 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String name = oAuth2User.getAttribute("name");
-        String email = oAuth2User.getAttribute("email");
-        String img = oAuth2User.getAttribute("picture");
+        OAuth2UserInfo oAuth2UserInfo = null;
+        if(userRequest.getClientRegistration().getRegistrationId().equals("google")){
+            System.out.println("구글");
+            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+        }
+
+        assert oAuth2UserInfo != null;
+        String name = oAuth2UserInfo.getName();
+        String email = oAuth2UserInfo.getEmail();
+        String img = oAuth2UserInfo.getImg();
         String role = "ROLE_USER";
 
         Member memberEntity = memberRepository.findByEmail(email);
