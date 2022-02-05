@@ -26,7 +26,7 @@ public class CommentService {
 
     //코멘트 만들기
     @Transactional
-    public void createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
+    public Comment createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
         Optional<Post> findPost = postRepository.findById(postId);
         Optional<Member> findMember = memberRepository.findById(memberId);
         Comment comment = Comment.builder()
@@ -36,6 +36,7 @@ public class CommentService {
         commentRepository.save(comment);
         findPost.get().addComment(comment);
         findMember.get().addComment(comment);
+        return comment;
     }
     //코멘트 삭제
     @Transactional
