@@ -1,19 +1,18 @@
 package youBeMyColleague.study.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Member {
 
     @Id @GeneratedValue
@@ -30,8 +29,8 @@ public class Member {
 
     private String img;
 
-    @CreatedDate
-    private String createDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+    @CreationTimestamp
+    private Timestamp createDate;
 
     @Embedded
     private TechStack stack;
@@ -57,5 +56,14 @@ public class Member {
         this.name = name;
         this.img = img;
         this.stack = stack;
+    }
+
+    @Builder
+    public Member(String name, String email, String img, String role, Timestamp createDate){
+        this.name = name;
+        this.email = email;
+        this.img = img;
+        this.role = role;
+        this.createDate = createDate;
     }
 }
