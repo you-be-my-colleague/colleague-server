@@ -43,4 +43,10 @@ public class Member {
         this.comments.add(comment);
         comment.setMember(this);
     }
+
+    public void updateMember(String name,String img, TechStack stack){
+        this.name = name;
+        this.img = img;
+        this.stack = stack;
+    }
 }
