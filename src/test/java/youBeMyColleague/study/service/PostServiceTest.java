@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.domain.*;
+import youBeMyColleague.study.dto.CommentRequestDto;
 import youBeMyColleague.study.dto.PostRequestDto;
 import youBeMyColleague.study.dto.PostResponseDto;
 import youBeMyColleague.study.repository.CommentRepository;
@@ -58,6 +60,7 @@ class PostServiceTest {
 
     //게시글 상세
     @Test
+    @Rollback(false)
     public void 게시글_상세_테스트() throws Exception {
         //given
         Member member = new Member();
@@ -68,16 +71,12 @@ class PostServiceTest {
                 .content("코멘트 확인")
                 .commentDate(LocalDateTime.now())
                 .build();
-        Comment saveComment = commentRepository.save(comment);
+        commentService.createComment(new CommentRequestDto(comment.getContent()),post.getId(),member.getId());
         Optional<Post> findPost = postRepository.findById(post.getId());
-        findPost.get().addComment(saveComment);
-        member.addComment(saveComment);
-
-        em.flush();
         //when
         List<Post> postWithAllComment = postService.findPost(findPost.get().getId());
         List<PostResponseDto> collect = postWithAllComment.stream()
-                .map(p -> new PostResponseDto(p))
+                .map(PostResponseDto::new)
                 .collect(Collectors.toList());
         //then
         assertThat(collect.size()).isEqualTo(1);
@@ -127,23 +126,11 @@ class PostServiceTest {
         member1.setName("userA");
         member1.setEmail("ekdmd@naver.com");
         member1.setStack(new TechStack(true,false,true,true));
-        Member member2 = new Member();
-        member2.setName("userB");
-        member2.setEmail("dmd@naver.com");
-        member2.setStack(new TechStack(true,false,true,false));
-        Member member3 = new Member();
-        member3.setName("userC");
-        member3.setEmail("ek@naver.com");
-        member3.setStack(new TechStack(true,false,false,true));
         memberService.join(member1);
-        memberService.join(member2);
-        memberService.join(member3);
+
         Post postA = postService.createPost(new PostRequestDto("testA", "contentsTest",
                 "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member1);
-        Post postB = postService.createPost(new PostRequestDto("testB", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member2);
-        Post postC = postService.createPost(new PostRequestDto("testC", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member3);
+
         //when
         Post post = postService.updatePost(postA.getId(), new PostRequestDto("newTestC", "newContentsTest", "ekdmd@gamil.com", new TechStack(false, false, true, false)));
         Optional<Post> findPost = postRepository.findById(postA.getId());
@@ -159,23 +146,11 @@ class PostServiceTest {
         member1.setName("userA");
         member1.setEmail("ekdmd@naver.com");
         member1.setStack(new TechStack(true,false,true,true));
-        Member member2 = new Member();
-        member2.setName("userB");
-        member2.setEmail("dmd@naver.com");
-        member2.setStack(new TechStack(true,false,true,false));
-        Member member3 = new Member();
-        member3.setName("userC");
-        member3.setEmail("ek@naver.com");
-        member3.setStack(new TechStack(true,false,false,true));
         memberService.join(member1);
-        memberService.join(member2);
-        memberService.join(member3);
+
         Post postA = postService.createPost(new PostRequestDto("testA", "contentsTest",
                 "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member1);
-        Post postB = postService.createPost(new PostRequestDto("testB", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member2);
-        Post postC = postService.createPost(new PostRequestDto("testC", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member3);
+
         //when
         Post post = postService.updatePostStatus(postA.getId(),new PostRequestDto(RecruitmentStatus.COMPLETE));
         Optional<Post> findPost = postRepository.findById(postA.getId());

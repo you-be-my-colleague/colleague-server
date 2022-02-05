@@ -9,7 +9,7 @@ spring:
     # DB password
     password: dkemf21518@
   jpa:
-    #show-sql: true
+    show-sql: true
     hibernate:
       ddl-auto: create
     properties:

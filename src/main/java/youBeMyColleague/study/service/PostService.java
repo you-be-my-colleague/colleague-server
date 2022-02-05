@@ -8,6 +8,7 @@ import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.RecruitmentStatus;
 import youBeMyColleague.study.dto.PostRequestDto;
+import youBeMyColleague.study.dto.PostResponseDto;
 import youBeMyColleague.study.repository.PostRepository;
 
 import java.time.LocalDateTime;
@@ -37,7 +38,11 @@ public class PostService {
     }
     //게시글 상세
     public List<Post> findPost(Long postId) {
-        return postRepository.findPostWithAllComment(postId);
+        Optional<List<Post>> postWithAllComment = postRepository.findPostWithAllComment(postId);
+        return postWithAllComment.get();
+//        if(postWithAllComment.isPresent()) {
+//            Optional<Post> byId = postRepository.findById(postId);
+//        }
     }
     //전체 게시글 불러오기
     public List<Post> findAllPost() {

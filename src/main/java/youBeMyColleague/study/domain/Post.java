@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 import youBeMyColleague.study.dto.PostRequestDto;
 
 import javax.persistence.*;
@@ -57,6 +58,7 @@ public class Post {
     private Member member;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @Nullable
     private List<Comment> comments = new ArrayList<>();
 
 

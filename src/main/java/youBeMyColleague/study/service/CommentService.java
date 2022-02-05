@@ -48,8 +48,8 @@ public class CommentService {
 
     //코멘트 수정
     @Transactional
-    public void updateComment(Long commentId,CommentRequestDto commentRequestDto) {
-        commentRepository.findById(commentId).get().updateComment(commentRequestDto);
+    public Comment updateComment(Long commentId,CommentRequestDto commentRequestDto) {
+        return commentRepository.findById(commentId).get().updateComment(commentRequestDto);
     }
 
 

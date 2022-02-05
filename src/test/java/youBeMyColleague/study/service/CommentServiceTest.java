@@ -50,7 +50,6 @@ class CommentServiceTest {
 
     //댓글 등록
     @Test
-    @Rollback(false)
     public void 댓글_등록() throws Exception {
         //given
         Member member = new Member();
@@ -80,18 +79,28 @@ class CommentServiceTest {
                 "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member);
         Comment contentTestA = commentService.createComment(new CommentRequestDto("contentTestA"), post.getId(), member.getId());
         //when
-        
+        Comment newContent = commentService.updateComment(contentTestA.getId(), new CommentRequestDto("newContent"));
         //then
+        assertThat(contentTestA.getContent()).isEqualTo(newContent.getContent());
+
     }
 
     //댓글 삭제
     @Test
+    @Rollback(false)
     public void 댓글_삭제() throws Exception {
         //given
-
+        Member member = new Member();
+        memberRepository.save(member);
+        Post post = postService.createPost(new PostRequestDto("testA", "contentsTest",
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member);
+        Comment contentTestA = commentService.createComment(new CommentRequestDto("contentTestA"), post.getId(), member.getId());
         //when
-
+        commentService.deleteComment(contentTestA.getId(),post.getId());
         //then
+        List<Post> findPost = postService.findPost(post.getId());
+        assertThat(findPost.get(0).getComments().isEmpty()).isTrue();
+
     }
 
 
