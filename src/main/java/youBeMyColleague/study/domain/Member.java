@@ -36,7 +36,7 @@ public class Member {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<wishList> wishLists = new ArrayList<>();
+    private List<WishList> wishLists = new ArrayList<>();
 
 
 }

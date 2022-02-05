@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
@@ -34,11 +35,12 @@ class PostServiceTest {
 
 
     @Test
+    @Rollback(false)
     public void 게시글_등록_테스트() throws Exception {
         //given
         Member member = new Member();
         memberRepository.save(member);
-        System.out.println(member);
+        em.flush();
         //when
         Post post = postService.createPost(new PostRequestDto("testA", "contentsTest",
                 "ekdmd9092@naver.com", new TechStack("s1", "s2", "s3", "")), member);
@@ -48,7 +50,43 @@ class PostServiceTest {
 
     }
 
+    //게시글 상세
+    @Test
+    public void 게시글_상세_테스트() throws Exception {
+        //given
 
+        //when
+
+        //then
+    }
+    //전체 게시글
+    @Test
+    public void 전체_게시글_조회() throws Exception {
+        //given
+
+        //when
+
+        //then
+    }
+
+    //게시글 수정
+    @Test
+    public void 게시글_수정() throws Exception {
+        //given
+
+        //when
+
+        //then
+    }
+    //게시글 상태 수정
+    @Test
+    public void 게시글_상태_수정() throws Exception {
+        //given
+
+        //when
+
+        //then
+    }
 
 
 
