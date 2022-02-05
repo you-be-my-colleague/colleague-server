@@ -34,6 +34,10 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
     @Autowired
+    private MemberService memberService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
     private PostRepository postRepository;
     @Autowired
     private MemberRepository memberRepository;
@@ -76,9 +80,10 @@ class PostServiceTest {
         Optional<Post> findPost = postRepository.findById(post.getId());
         findPost.get().addComment(saveComment);
         member.addComment(saveComment);
+
         em.flush();
         //when
-        List<Post> postWithAllComment = postRepository.findPostWithAllComment(findPost.get().getId());
+        List<Post> postWithAllComment = postService.findPost(findPost.get().getId());
         List<PostResponseDto> collect = postWithAllComment.stream()
                 .map(p -> new PostResponseDto(p))
                 .collect(Collectors.toList());
@@ -97,10 +102,32 @@ class PostServiceTest {
     @Rollback(false)
     public void 전체_게시글_조회() throws Exception {
         //given
-
+        Member member1 = new Member();
+        member1.setName("userA");
+        member1.setEmail("ekdmd@naver.com");
+        member1.setStack(new TechStack(true,false,true,true));
+        Member member2 = new Member();
+        member2.setName("userB");
+        member2.setEmail("dmd@naver.com");
+        member2.setStack(new TechStack(true,false,true,false));
+        Member member3 = new Member();
+        member3.setName("userC");
+        member3.setEmail("ek@naver.com");
+        member3.setStack(new TechStack(true,false,false,true));
+        memberService.join(member1);
+        memberService.join(member2);
+        memberService.join(member3);
+        postService.createPost(new PostRequestDto("testA", "contentsTest",
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member1);
+        postService.createPost(new PostRequestDto("testA", "contentsTest",
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member2);
+        postService.createPost(new PostRequestDto("testA", "contentsTest",
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member3);
         //when
-
+        List<Post> allPost = postService.findAllPost();
         //then
+        assertThat(allPost.size()).isEqualTo(3);
+        
     }
 
     //게시글 수정

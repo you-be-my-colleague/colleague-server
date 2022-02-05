@@ -36,8 +36,8 @@ public class PostService {
         return postRepository.save(post);
     }
     //게시글 상세
-    public Post findPost(Long postId) {
-        return postRepository.findById(postId).get();
+    public List<Post> findPost(Long postId) {
+        return postRepository.findPostWithAllComment(postId);
     }
     //전체 게시글 불러오기
     public List<Post> findAllPost() {

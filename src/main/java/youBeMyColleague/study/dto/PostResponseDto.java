@@ -16,6 +16,7 @@ public class PostResponseDto {
     private RecruitmentStatus postStatus;
     private int views ;
     private int likes ;
+    private int commentCount;
     private LocalDateTime postDate;
     private String creater;
     private List<Comment> comments;
@@ -32,6 +33,7 @@ public class PostResponseDto {
         this.postDate = post.getPostDate();
         this.creater = post.getMember().getName();
         this.comments = post.getComments();
+        this.commentCount = post.getCommentCount();
         this.member = post.getMember();
     }
 }
