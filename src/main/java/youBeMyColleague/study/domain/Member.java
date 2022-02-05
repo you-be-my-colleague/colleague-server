@@ -39,4 +39,9 @@ public class Member {
     private List<wishList> wishLists = new ArrayList<>();
 
 
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setPost(this);
+    }
+
 }
