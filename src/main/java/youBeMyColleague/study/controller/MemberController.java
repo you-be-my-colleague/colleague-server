@@ -18,18 +18,18 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
-    @PostMapping("/signup")
-    public Member SignMember(@RequestBody MemberRequestDto memberRequestDto){
-
-        TechStack techStack = new TechStack(memberRequestDto.getStack().getStack1(), memberRequestDto.getStack().getStack2(), memberRequestDto.getStack().getStack3(), memberRequestDto.getStack().getStack4());
-        Member member = new Member();
-        member.setName(memberRequestDto.getName());
-        member.setEmail(memberRequestDto.getEmail());
-        member.setImg(memberRequestDto.getImg());
-        member.setStack(techStack);
-        memberService.join(member);
-        return member;
-    }
+//    @PostMapping("/signup")
+//    public Member SignMember(@RequestBody MemberRequestDto memberRequestDto){
+//
+////        TechStack techStack = new TechStack(memberRequestDto.getStack().getStack1(), memberRequestDto.getStack().getStack2(), memberRequestDto.getStack().getStack3(), memberRequestDto.getStack().getStack4());
+////        Member member = new Member();
+////        member.setName(memberRequestDto.getName());
+////        member.setEmail(memberRequestDto.getEmail());
+////        member.setImg(memberRequestDto.getImg());
+////        member.setStack(techStack);
+////        memberService.join(member);
+////        return member;
+//    }
 
     @GetMapping("/my-page/{email}")
     public Member selectMember(@PathVariable String email){

@@ -71,7 +71,7 @@ public class Post {
         this.member = member;
         member.getPosts().add(this);
     }
-    public void setViews() {
+    public void addViewsCount() {
         this.views += 1;
     }
 

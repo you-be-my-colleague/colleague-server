@@ -34,7 +34,7 @@ public class CommentService {
                 .build();
         commentRepository.save(comment);
         findPost.get().addComment(comment);
-        //findMember.get().addComment(comment);
+        findMember.get().addComment(comment);
     }
     @Transactional
     public void deleteComment(Long commentId,Long postId) {
