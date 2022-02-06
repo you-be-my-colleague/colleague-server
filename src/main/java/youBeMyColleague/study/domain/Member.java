@@ -17,7 +17,7 @@ public class Member {
 
     @Id @GeneratedValue
     @Column(name = "member_id")
-    @JsonIgnore
+
     private Long id;
 
     private String name;
