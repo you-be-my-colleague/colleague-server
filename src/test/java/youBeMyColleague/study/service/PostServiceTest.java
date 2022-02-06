@@ -48,7 +48,7 @@ class PostServiceTest {
         Member member = new Member();
         memberRepository.save(member);
         Post post = postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member);
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member.getId());
         em.flush();
         //when
         Optional<Post> findpost = postRepository.findById(post.getId());
@@ -65,7 +65,7 @@ class PostServiceTest {
         Member member = new Member();
         memberRepository.save(member);
         Post post = postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member);
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member.getId());
         Comment comment = Comment.builder()
                 .content("코멘트 확인")
                 .commentDate(LocalDateTime.now())
@@ -80,7 +80,7 @@ class PostServiceTest {
         //then
         assertThat(collect.size()).isEqualTo(1);
         assertThat(collect.get(0).getContent()).isEqualTo(findPost.get().getContent());
-        assertThat(collect.get(0).getCreater()).isEqualTo(findPost.get().getMember().getName());
+        assertThat(collect.get(0).getCreater_name()).isEqualTo(findPost.get().getMember().getName());
         assertThat(collect.get(0).getGitAddress()).isEqualTo(findPost.get().getGitAddress());
         assertThat(collect.get(0).getStack()).isEqualTo(findPost.get().getStack());
         assertThat(collect.get(0).getTitle()).isEqualTo(findPost.get().getTitle());
@@ -106,11 +106,11 @@ class PostServiceTest {
         memberService.join(member2);
         memberService.join(member3);
         postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member1);
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member1.getId());
         postService.createPost(new PostRequestDto("testB", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member2);
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member2.getId());
         postService.createPost(new PostRequestDto("testC", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member3);
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member3.getId());
         //when
         List<Post> allPost = postService.findAllPost();
         //then
@@ -129,7 +129,7 @@ class PostServiceTest {
         memberService.join(member1);
 
         Post postA = postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member1);
+                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member1.getId());
 
         //when
         Post post = postService.updatePost(postA.getId(), new PostRequestDto("newTestC", "newContentsTest", "ekdmd@gamil.com", new TechStack(false, false, true, false)));
@@ -149,7 +149,7 @@ class PostServiceTest {
         memberService.join(member1);
 
         Post postA = postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member1);
+                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member1.getId());
 
         //when
         Post post = postService.updatePostStatus(postA.getId(),new PostRequestDto(RecruitmentStatus.COMPLETE));
@@ -165,7 +165,7 @@ class PostServiceTest {
         member1.setEmail("ekdmd@naver.com");
         member1.setStack(new TechStack(true,false,true,true));
         Post postA = postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member1);
+                "ekdmd9092@naver.com", new TechStack(true, true, false, false)), member1.getId());
         //when
         Post post = postService.updatePostStatus(postA.getId(),new PostRequestDto(RecruitmentStatus.CONTINUE));
         Optional<Post> findPost = postRepository.findById(postA.getId());
