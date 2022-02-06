@@ -58,7 +58,6 @@ public class Post {
     private Member member;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    @Nullable
     private List<Comment> comments = new ArrayList<>();
 
 

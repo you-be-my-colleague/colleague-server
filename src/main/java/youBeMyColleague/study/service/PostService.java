@@ -21,7 +21,6 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final CommentService commentService;
 
     @Transactional
     public Post createPost(PostRequestDto postRequestDto, Member member) {
@@ -40,9 +39,6 @@ public class PostService {
     public List<Post> findPost(Long postId) {
         Optional<List<Post>> postWithAllComment = postRepository.findPostWithAllComment(postId);
         return postWithAllComment.get();
-//        if(postWithAllComment.isPresent()) {
-//            Optional<Post> byId = postRepository.findById(postId);
-//        }
     }
     //전체 게시글 불러오기
     public List<Post> findAllPost() {

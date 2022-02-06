@@ -6,6 +6,7 @@ import youBeMyColleague.study.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class PostResponseDto {
@@ -19,8 +20,8 @@ public class PostResponseDto {
     private int commentCount;
     private LocalDateTime postDate;
     private String creater;
-    private List<Comment> comments;
-    private Member member;
+    private List<CommentResponseDto> comments;
+    private String memberName;
 
     public PostResponseDto(Post post) {
         this.title = post.getTitle();
@@ -32,8 +33,10 @@ public class PostResponseDto {
         this.likes = post.getLikes();
         this.postDate = post.getPostDate();
         this.creater = post.getMember().getName();
-        this.comments = post.getComments();
+        this.comments = post.getComments().stream()
+                .map(c -> new CommentResponseDto(c.getMember().getName(),c.getContent()))
+                .collect(Collectors.toList());
         this.commentCount = post.getCommentCount();
-        this.member = post.getMember();
+        this.memberName = post.getMember().getName();
     }
 }

@@ -50,6 +50,7 @@ class CommentServiceTest {
 
     //댓글 등록
     @Test
+    @Rollback(false)
     public void 댓글_등록() throws Exception {
         //given
         Member member = new Member();
@@ -65,9 +66,9 @@ class CommentServiceTest {
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());
         //then
-        assertThat(collect.get(0).getComments().get(0).getId()).isEqualTo(contentTestA.getId());
-        assertThat(collect.get(0).getComments().get(1).getId()).isEqualTo(contentTestB.getId());
-        assertThat(collect.get(0).getComments().get(2).getId()).isEqualTo(contentTestC.getId());
+        assertThat(collect.get(0).getComments().get(0).getContent()).isEqualTo(contentTestA.getContent());
+        assertThat(collect.get(0).getComments().get(1).getContent()).isEqualTo(contentTestB.getContent());
+        assertThat(collect.get(0).getComments().get(2).getContent()).isEqualTo(contentTestC.getContent());
     }
     //댓글 수정
     @Test

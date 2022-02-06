@@ -16,7 +16,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     @Query("select distinct p from Post p")
     public Optional<List<Post>> findPostWithAllComment(Long postId);
-//    Page<Post> findPostWithAllComment(Pageable pageable);
 
 }
 

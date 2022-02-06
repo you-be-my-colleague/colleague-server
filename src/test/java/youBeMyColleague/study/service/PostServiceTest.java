@@ -60,7 +60,6 @@ class PostServiceTest {
 
     //게시글 상세
     @Test
-    @Rollback(false)
     public void 게시글_상세_테스트() throws Exception {
         //given
         Member member = new Member();
@@ -88,6 +87,7 @@ class PostServiceTest {
     }
     //전체 게시글
     @Test
+    @Rollback(false)
     public void 전체_게시글_조회() throws Exception {
         //given
         Member member1 = new Member();
@@ -107,9 +107,9 @@ class PostServiceTest {
         memberService.join(member3);
         postService.createPost(new PostRequestDto("testA", "contentsTest",
                 "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member1);
-        postService.createPost(new PostRequestDto("testA", "contentsTest",
+        postService.createPost(new PostRequestDto("testB", "contentsTest",
                 "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member2);
-        postService.createPost(new PostRequestDto("testA", "contentsTest",
+        postService.createPost(new PostRequestDto("testC", "contentsTest",
                 "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member3);
         //when
         List<Post> allPost = postService.findAllPost();
