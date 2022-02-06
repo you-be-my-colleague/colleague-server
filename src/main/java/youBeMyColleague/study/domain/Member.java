@@ -35,11 +35,9 @@ public class Member {
     @Embedded
     private TechStack stack;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
-
-    @JsonIgnore
+    
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
