@@ -23,7 +23,6 @@ public class MemberController {
         TechStack techStack = new TechStack(memberRequestDto.getStack().getPython(), memberRequestDto.getStack().getSpring(), memberRequestDto.getStack().getReact(), memberRequestDto.getStack().getNode());
         Member member = new Member();
         member.setName(memberRequestDto.getName());
-        member.setEmail(memberRequestDto.getEmail());
         member.setImg(memberRequestDto.getImg());
         member.setStack(techStack);
         memberService.join(member);
@@ -50,4 +49,9 @@ public class MemberController {
         findMember.get().setStack(techStack);
         memberService.updateMember(findMember.get());
         return "수정 완료";}
+
+    @GetMapping("/my-page/post/my-posts/{id}")
+    public String selectPost(@PathVariable Long id){
+        return memberService.findMemberPost(id);
+    }
 }
