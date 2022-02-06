@@ -23,8 +23,7 @@ public class Member {
     private String name;
 
     private String email;
-
-    @JsonIgnore
+    
     private String role;
 
     private String img;
