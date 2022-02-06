@@ -20,13 +20,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public Member SignMember(@RequestBody MemberRequestDto memberRequestDto){
-        TechStack techStack = new TechStack(memberRequestDto.getStack().getPython(), memberRequestDto.getStack().getSpring(), memberRequestDto.getStack().getReact(), memberRequestDto.getStack().getNode());
-        Member member = new Member();
-        member.setName(memberRequestDto.getName());
-        member.setImg(memberRequestDto.getImg());
-        member.setRole("USER");
-        member.setStack(techStack);
-        memberService.join(member);
+        Member member = memberService.join(memberRequestDto);
         return member;
     }
 
