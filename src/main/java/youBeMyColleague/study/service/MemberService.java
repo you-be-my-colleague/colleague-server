@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.domain.Member;
+import youBeMyColleague.study.domain.TechStack;
+import youBeMyColleague.study.dto.MemberChangeRequestDto;
+import youBeMyColleague.study.dto.MemberRequestDto;
 import youBeMyColleague.study.repository.MemberRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,9 +21,16 @@ public class MemberService {
 
     // 회원가입
     @Transactional
-    public void join(Member member) {
+    public Member join(MemberRequestDto memberRequestDto) {
+        Member member = Member.builder()
+                .name(memberRequestDto.getName())
+                .img(memberRequestDto.getImg())
+                .role("ROLE_USER")
+                .stack(memberRequestDto.getStack())
+                .build();
         validateDuplicateMember(member);
         memberRepository.save(member);
+        return member;
     }
 
     private void validateDuplicateMember(Member member) {
@@ -36,12 +47,12 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMember(Member member) {
-        member.updateMember(member.getName(),member.getImg(),member.getStack());
+    public void updateMember(Member member, MemberChangeRequestDto memberChangeRequestDto) {
+            member.updateMember(memberChangeRequestDto.getName(), memberChangeRequestDto.getImg(), memberChangeRequestDto.getStack());
     }
 
-    public String findMemberPost(Long id) {
-        memberRepository.findMemberPost(id);
-        return null;
+    public List<Member> findMemberPost(Long id) {
+        List<Member> memberPost = memberRepository.findMemberPost(id);
+        return memberPost;
     }
 }

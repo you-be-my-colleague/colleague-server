@@ -1,15 +1,20 @@
 package youBeMyColleague.study.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.TechStack;
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
+import youBeMyColleague.study.dto.MemberResponseDto;
+import youBeMyColleague.study.dto.Wrap;
 import youBeMyColleague.study.repository.MemberRepository;
 import youBeMyColleague.study.service.MemberService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,19 +25,14 @@ public class MemberController {
 
     @PostMapping("/signup")
     public Member SignMember(@RequestBody MemberRequestDto memberRequestDto){
-        TechStack techStack = new TechStack(memberRequestDto.getStack().getPython(), memberRequestDto.getStack().getSpring(), memberRequestDto.getStack().getReact(), memberRequestDto.getStack().getNode());
-        Member member = new Member();
-        member.setName(memberRequestDto.getName());
-        member.setImg(memberRequestDto.getImg());
-        member.setRole("USER");
-        member.setStack(techStack);
-        memberService.join(member);
+        Member member = memberService.join(memberRequestDto);
         return member;
     }
 
     @GetMapping("/my-page/{id}")
-    public Optional<Member> selectMember(@PathVariable Long id){
-        return memberRepository.findById(id);
+    public Optional<MemberResponseDto> selectMember(@PathVariable Long id){
+        Optional<MemberResponseDto> member = Optional.ofNullable(memberRepository.findOneMember(id));
+        return member;
     }
 
     @DeleteMapping("/my-page/{id}")
@@ -43,16 +43,15 @@ public class MemberController {
     @PatchMapping("/my-page/{id}")
     public String updateMember(@PathVariable Long id,
                                @RequestBody MemberChangeRequestDto memberChangeRequestDto){
-        TechStack techStack = new TechStack(memberChangeRequestDto.getStack().getSpring(),memberChangeRequestDto.getStack().getReact(),memberChangeRequestDto.getStack().getPython(),memberChangeRequestDto.getStack().getNode());
         Optional<Member> findMember = memberRepository.findById(id);
-        findMember.get().setImg(memberChangeRequestDto.getImg());
-        findMember.get().setName(memberChangeRequestDto.getName());
-        findMember.get().setStack(techStack);
-        memberService.updateMember(findMember.get());
+        memberService.updateMember(findMember.get(), memberChangeRequestDto);
         return "수정 완료";}
 
     @GetMapping("/my-page/post/my-posts/{id}")
-    public String selectPost(@PathVariable Long id){
-        return memberService.findMemberPost(id);
+    public ResponseEntity<Wrap> selecPost(@PathVariable Long id){
+        List<Member> members = memberService.findMemberPost(id);
+        return ResponseEntity.ok().body(new Wrap(members.stream()
+                .map(MemberResponseDto::new)
+                .collect(Collectors.toList())));
     }
 }

@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class Member {
 
@@ -56,11 +55,12 @@ public class Member {
     }
 
     @Builder
-    public Member(String name, String email, String img, String role, Timestamp createDate){
+    public Member(String name, String email, String img, String role,TechStack stack, Timestamp createDate){
         this.name = name;
         this.email = email;
         this.img = img;
         this.role = role;
         this.createDate = createDate;
+        this.stack = stack;
     }
 }
