@@ -51,9 +51,10 @@ public class Comment {
     /**
      * 댓글 수정
      */
-    public void updateComment(CommentRequestDto commentRequestDto) {
+    public Comment updateComment(CommentRequestDto commentRequestDto) {
         this.content = commentRequestDto.getContent();
         this.commentDate = LocalDateTime.now();
+        return this;
     }
 
 

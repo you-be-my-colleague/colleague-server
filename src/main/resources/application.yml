@@ -7,16 +7,13 @@ spring:
     # DB username
     username: root
     # DB password
-    password: 1q2w3e4r
+    password: dkemf21518@
   jpa:
-    #show-sql: true
-    hibernate:
-      ddl-auto: create
     properties:
-      SQL: debug
-      generate-ddl: true
-      format_sql: true
-      default_batch_fetch_size: 100
+      hibernate:
+        ddl-auto: update
+        format_sql: true
+        default_batch_fetch_size: 100
 
   security:
     oauth2:
@@ -53,8 +50,6 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
-#      type:
-#        descrptor:
+
 server:
   port: 8081
-#          sql:trace

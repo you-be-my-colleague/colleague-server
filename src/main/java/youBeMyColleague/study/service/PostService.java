@@ -8,6 +8,7 @@ import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.RecruitmentStatus;
 import youBeMyColleague.study.dto.PostRequestDto;
+import youBeMyColleague.study.dto.PostResponseDto;
 import youBeMyColleague.study.repository.PostRepository;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,6 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final CommentService commentService;
 
     @Transactional
     public Post createPost(PostRequestDto postRequestDto, Member member) {
@@ -36,8 +36,9 @@ public class PostService {
         return postRepository.save(post);
     }
     //게시글 상세
-    public Post findPost(Long postId) {
-        return postRepository.findById(postId).get();
+    public List<Post> findPost(Long postId) {
+        Optional<List<Post>> postWithAllComment = postRepository.findPostWithAllComment(postId);
+        return postWithAllComment.get();
     }
     //전체 게시글 불러오기
     public List<Post> findAllPost() {
@@ -46,16 +47,18 @@ public class PostService {
 
     //게시글 수정
     @Transactional
-    public void updatePost(Long postId, PostRequestDto postRequestDto) {
+    public Post updatePost(Long postId, PostRequestDto postRequestDto) {
         Optional<Post> post = postRepository.findById(postId);
         post.get().updatePost(postRequestDto);
+        return post.get();
     }
 
     //게시글 상태 수정
     @Transactional
-    public void updatePostStatus(Long postId) {
+    public Post updatePostStatus(Long postId,PostRequestDto postRequestDto) {
         Optional<Post> post = postRepository.findById(postId);
-        post.get().updatePostStatus();
+        post.get().updatePostStatus(postRequestDto);
+        return post.get();
     }
 
 

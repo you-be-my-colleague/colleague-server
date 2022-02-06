@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 import youBeMyColleague.study.dto.PostRequestDto;
 
 import javax.persistence.*;
@@ -71,7 +72,7 @@ public class Post {
         this.member = member;
         member.getPosts().add(this);
     }
-    public void setViews() {
+    public void addViewsCount() {
         this.views += 1;
     }
 
@@ -89,11 +90,8 @@ public class Post {
     /**
      * 게시글 상태 수정
      */
-    public void updatePostStatus() {
-        if (getPostStatus() == RecruitmentStatus.COMPLETE) {
-            throw new IllegalStateException("이미 마감된 모임 입니다.");
-        }
-        this.postStatus = RecruitmentStatus.COMPLETE;
+    public void updatePostStatus(PostRequestDto postRequestDto) {
+        this.postStatus = postRequestDto.getRecruitmentStatus();
     }
 
     //==연관관계 메서드
