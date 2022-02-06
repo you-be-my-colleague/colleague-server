@@ -9,6 +9,7 @@ import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.RecruitmentStatus;
 import youBeMyColleague.study.dto.PostRequestDto;
 import youBeMyColleague.study.dto.PostResponseDto;
+import youBeMyColleague.study.repository.MemberRepository;
 import youBeMyColleague.study.repository.PostRepository;
 
 import java.time.LocalDateTime;
@@ -21,9 +22,11 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public Post createPost(PostRequestDto postRequestDto, Member member) {
+    public Post createPost(PostRequestDto postRequestDto, Long createrId) {
+        Optional<Member> member = memberRepository.findById(createrId);
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
@@ -31,7 +34,7 @@ public class PostService {
                 .gitAddress(postRequestDto.getGitAddress())
                 .postDate(LocalDateTime.now())
                 .postStatus(RecruitmentStatus.CONTINUE)
-                .member(member)
+                .member(member.get())
                 .build();
         return postRepository.save(post);
     }

@@ -1,7 +1,7 @@
 package youBeMyColleague.study.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,13 +20,11 @@ import youBeMyColleague.study.repository.PostRepository;
 
 import javax.persistence.EntityManager;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 
@@ -35,15 +33,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class CommentServiceTest {
     @Autowired
-    private EntityManager em;
-    @Autowired
     private PostService postService;
     @Autowired
     private CommentService commentService;
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private PostRepository postRepository;
     @Autowired
     private MemberRepository memberRepository;
 
@@ -56,7 +48,7 @@ class CommentServiceTest {
         Member member = new Member();
         memberRepository.save(member);
         Post post = postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member);
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member.getId());
         //when
         Comment contentTestA = commentService.createComment(new CommentRequestDto("contentTestA"), post.getId(), member.getId());
         Comment contentTestB = commentService.createComment(new CommentRequestDto("contentTestB"), post.getId(), member.getId());
@@ -77,7 +69,7 @@ class CommentServiceTest {
         Member member = new Member();
         memberRepository.save(member);
         Post post = postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member);
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member.getId());
         Comment contentTestA = commentService.createComment(new CommentRequestDto("contentTestA"), post.getId(), member.getId());
         //when
         Comment newContent = commentService.updateComment(contentTestA.getId(), new CommentRequestDto("newContent"));
@@ -94,7 +86,7 @@ class CommentServiceTest {
         Member member = new Member();
         memberRepository.save(member);
         Post post = postService.createPost(new PostRequestDto("testA", "contentsTest",
-                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member);
+                "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member.getId());
         Comment contentTestA = commentService.createComment(new CommentRequestDto("contentTestA"), post.getId(), member.getId());
         //when
         commentService.deleteComment(contentTestA.getId(),post.getId());
