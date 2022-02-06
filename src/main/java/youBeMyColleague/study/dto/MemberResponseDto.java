@@ -2,9 +2,12 @@ package youBeMyColleague.study.dto;
 
 import lombok.Data;
 import youBeMyColleague.study.domain.Member;
+import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.TechStack;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class MemberResponseDto {
@@ -22,6 +25,8 @@ public class MemberResponseDto {
 
     private TechStack stack;
 
+    private List<PostResponseDto> post;
+
     public MemberResponseDto(Member member) {
         this.id = member.getId();
         this.name = member.getName();
@@ -30,5 +35,8 @@ public class MemberResponseDto {
         this.img = member.getImg();
         this.createDate = member.getCreateDate();
         this.stack = member.getStack();
+        this.post = member.getPosts().stream()
+                .map(c -> new PostResponseDto(c.getPostDate(),c.getContent(),c.getCommentCount(),c.getGitAddress(),c.getLikes(),c.getTitle(),c.getPostStatus(), c.getViews()))
+                .collect(Collectors.toList());
     }
 }

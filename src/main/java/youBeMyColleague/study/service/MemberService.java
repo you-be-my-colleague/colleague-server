@@ -33,6 +33,11 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
+    public void addMemberReg(Member member, MemberRequestDto memberRequestDto){
+        member.updateMember(memberRequestDto.getName(), memberRequestDto.getImg(), memberRequestDto.getStack());
+    }
+
     private void validateDuplicateMember(Member member) {
         List<Member> findMembers = memberRepository.findByName(member.getName());
         System.out.println("findMembers" + findMembers);
@@ -52,7 +57,7 @@ public class MemberService {
     }
 
     public List<Member> findMemberPost(Long id) {
-        List<Member> memberPost = memberRepository.findMemberPost(id);
-        return memberPost;
+        Optional<List<Member>> memberPost = memberRepository.findMemberPost(id);
+        return memberPost.get();
     }
 }
