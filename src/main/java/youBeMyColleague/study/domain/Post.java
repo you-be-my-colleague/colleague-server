@@ -57,7 +57,7 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
 
@@ -91,7 +91,7 @@ public class Post {
      * 게시글 상태 수정
      */
     public void updatePostStatus(PostRequestDto postRequestDto) {
-        this.postStatus = postRequestDto.getRecruitmentStatus();
+        this.postStatus = postRequestDto.getPostStatus();
     }
 
     //==연관관계 메서드
