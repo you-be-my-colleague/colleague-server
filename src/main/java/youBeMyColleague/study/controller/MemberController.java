@@ -58,4 +58,13 @@ public class MemberController {
                 .map(MemberResponseDto::new)
                 .collect(Collectors.toList())));
     }
+
+    //마이페이지 내 관심글
+    @GetMapping("/my-page/my-likes/{id}")
+    public ResponseEntity<Wrap> selectLikePost(@PathVariable Long id){
+        List<Member> memberLikePost = memberService.findLikePost(id);
+        return ResponseEntity.ok().body(new Wrap(memberLikePost.stream()
+                .map(Member::getWishLists)
+                .collect(Collectors.toList())));
+    }
 }
