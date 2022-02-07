@@ -28,7 +28,6 @@ public class PostController {
                 .collect(Collectors.toList())));
     }
 
-    //{”creater_id”:”creater_id”,”title”:”title”,”stack”:[”python”:true],”content”:”content”}
 //2. 게시글 작성
     @PostMapping("/post/{creater_id}")
     public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto, @PathVariable("creater_id") Long createrId) {
@@ -37,14 +36,7 @@ public class PostController {
     }
 
 //3. 게시글 수정
-
-
-
-//4. 게시글 삭제
-//   게시글 삭제시
-//   댓글 및 게시글 DB에서 데이터 삭제
-//   orphan.Removal ? 이거 사용하면 연관관계 다삭제 된다는데 확인
-
-
+//4. 게시글 삭제 orphan.Removal ? 이거 사용하면 연관관계 다삭제 된다는데 확인
 //5. 게시글 마감
+
 }

@@ -36,7 +36,7 @@ public class MemberResponseDto {
         this.createDate = member.getCreateDate();
         this.stack = member.getStack();
         this.post = member.getPosts().stream()
-                .map(c -> new PostResponseDto(c.getPostDate(),c.getContent(),c.getCommentCount(),c.getGitAddress(),c.getLikes(),c.getTitle(),c.getPostStatus(), c.getViews()))
+                .map(PostResponseDto::new)
                 .collect(Collectors.toList());
     }
 }

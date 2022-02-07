@@ -47,12 +47,19 @@ class CommentServiceTest {
         //given
         Member member = new Member();
         memberRepository.save(member);
+        Member member1 = new Member();
+        memberRepository.save(member1);
+        Member member2 = new Member();
+        memberRepository.save(member2);
+        Member member3 = new Member();
+        memberRepository.save(member3);
+
         Post post = postService.createPost(new PostRequestDto("testA", "contentsTest",
                 "ekdmd9092@naver.com", new TechStack(true,true,false,false)), member.getId());
         //when
-        Comment contentTestA = commentService.createComment(new CommentRequestDto("contentTestA"), post.getId(), member.getId());
-        Comment contentTestB = commentService.createComment(new CommentRequestDto("contentTestB"), post.getId(), member.getId());
-        Comment contentTestC = commentService.createComment(new CommentRequestDto("contentTestC"), post.getId(), member.getId());
+        Comment contentTestA = commentService.createComment(new CommentRequestDto("contentTestA"), post.getId(), member1.getId());
+        Comment contentTestB = commentService.createComment(new CommentRequestDto("contentTestB"), post.getId(), member2.getId());
+        Comment contentTestC = commentService.createComment(new CommentRequestDto("contentTestC"), post.getId(), member3.getId());
         List<Post> findPost = postService.findPost(post.getId());
         List<PostResponseDto> collect = findPost.stream()
                 .map(PostResponseDto::new)
