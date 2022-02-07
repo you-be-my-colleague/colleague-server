@@ -64,6 +64,13 @@ public class PostService {
         return post.get();
     }
 
+    //게시글 삭제
+    @Transactional
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
+    }
+
+
 
 
 

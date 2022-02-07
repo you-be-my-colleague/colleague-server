@@ -19,7 +19,7 @@ public class PostController {
 
     private final PostService postService;
 
-//1. 상세게시글 조회
+    //1. 상세게시글 조회
     @GetMapping("/post-detail/{post_id}")
     public ResponseEntity<Wrap> findOnePost(@PathVariable("post_id") Long postId) {
         List<Post> post = postService.findPost(postId);
@@ -28,15 +28,30 @@ public class PostController {
                 .collect(Collectors.toList())));
     }
 
-//2. 게시글 작성
+    //2. 게시글 작성
     @PostMapping("/post/{creater_id}")
     public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto, @PathVariable("creater_id") Long createrId) {
         postService.createPost(postRequestDto, createrId);
         return ResponseEntity.ok().body("{'result':'success'}");
     }
 
-//3. 게시글 수정
-//4. 게시글 삭제 orphan.Removal ? 이거 사용하면 연관관계 다삭제 된다는데 확인
-//5. 게시글 마감
+    //3. 게시글 수정
+    @PatchMapping("/post/{post_id}")
+    public ResponseEntity<String> updatePost(@PathVariable("post_id") Long postId, @RequestBody PostRequestDto postRequestDto) {
+        postService.updatePost(postId, postRequestDto);
+        return ResponseEntity.ok().body("{'result':'success'}");
+    }
 
+    //4. 게시글 삭제 -> 게시글 삭제시 댓글도 삭제됨
+    @DeleteMapping("/post/{post_id}")
+    public ResponseEntity<String> deletePost(@PathVariable("post_id") Long postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.ok().body("{'result':'success'}");
+    }
+//5. 게시글 마감
+    @PutMapping("/post/{post_id}")
+    public ResponseEntity<String> updatePostStatus(@PathVariable("post_id") Long postId, @RequestBody PostRequestDto postRequestDto) {
+        postService.updatePostStatus(postId,postRequestDto);
+        return ResponseEntity.ok().body("{'result':'success'}");
+    }
 }

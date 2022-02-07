@@ -16,7 +16,7 @@ public class PostRequestDto {
     private String content;
     private String gitAddress;
     private TechStack stack;
-    private RecruitmentStatus recruitmentStatus;
+    private RecruitmentStatus postStatus;
 
     public PostRequestDto(String title, String content, String gitAddress, TechStack stack) {
         this.title = title;
@@ -24,12 +24,5 @@ public class PostRequestDto {
         this.gitAddress = gitAddress;
         this.stack = stack;
     }
-
-    public PostRequestDto(RecruitmentStatus recruitmentStatus) {
-        this.recruitmentStatus = recruitmentStatus;
-
-    }
-
-
 
 }
