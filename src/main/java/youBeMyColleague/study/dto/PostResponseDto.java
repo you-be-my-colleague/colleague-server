@@ -42,8 +42,4 @@ public class PostResponseDto {
                 .collect(Collectors.toList());
         this.commentCount = post.getCommentCount();
     }
-
-    public PostResponseDto(LocalDateTime postDate, String content, int commentCount, String gitAddress, int likes, String title, RecruitmentStatus postStatus, int views) {
-
-    }
 }
