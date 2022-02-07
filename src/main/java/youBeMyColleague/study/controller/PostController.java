@@ -30,14 +30,16 @@ public class PostController {
 
     //2. 게시글 작성
     @PostMapping("/post/{creater_id}")
-    public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto, @PathVariable("creater_id") Long createrId) {
+    public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto,
+                                             @PathVariable("creater_id") Long createrId) {
         postService.createPost(postRequestDto, createrId);
         return ResponseEntity.ok().body("{'result':'success'}");
     }
 
     //3. 게시글 수정
     @PatchMapping("/post/{post_id}")
-    public ResponseEntity<String> updatePost(@PathVariable("post_id") Long postId, @RequestBody PostRequestDto postRequestDto) {
+    public ResponseEntity<String> updatePost(@PathVariable("post_id") Long postId,
+                                             @RequestBody PostRequestDto postRequestDto) {
         postService.updatePost(postId, postRequestDto);
         return ResponseEntity.ok().body("{'result':'success'}");
     }
@@ -50,7 +52,8 @@ public class PostController {
     }
 //5. 게시글 마감
     @PutMapping("/post/{post_id}")
-    public ResponseEntity<String> updatePostStatus(@PathVariable("post_id") Long postId, @RequestBody PostRequestDto postRequestDto) {
+    public ResponseEntity<String> updatePostStatus(@PathVariable("post_id") Long postId,
+                                                   @RequestBody PostRequestDto postRequestDto) {
         postService.updatePostStatus(postId,postRequestDto);
         return ResponseEntity.ok().body("{'result':'success'}");
     }
