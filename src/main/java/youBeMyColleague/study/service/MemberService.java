@@ -1,6 +1,7 @@
 package youBeMyColleague.study.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.domain.Member;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -56,8 +58,15 @@ public class MemberService {
             member.updateMember(memberChangeRequestDto.getName(), memberChangeRequestDto.getImg(), memberChangeRequestDto.getStack());
     }
 
+    @Transactional(readOnly = true)
     public List<Member> findMemberPost(Long id) {
         Optional<List<Member>> memberPost = memberRepository.findMemberPost(id);
+        log.info("test"+memberPost.get());
         return memberPost.get();
+    }
+
+    public List<Member> findLikePost(Long id) {
+        Optional<List<Member>> memberLikePost = memberRepository.findMemberLikePost(id);
+        return memberLikePost.get();
     }
 }
