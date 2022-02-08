@@ -5,11 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.domain.Member;
-import youBeMyColleague.study.domain.Role;
-import youBeMyColleague.study.domain.TechStack;
+
+import youBeMyColleague.study.domain.Post;
+import youBeMyColleague.study.domain.WishList;
+
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
 import youBeMyColleague.study.repository.MemberRepository;
+import youBeMyColleague.study.repository.PostRepository;
+import youBeMyColleague.study.repository.WishListRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +25,9 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
+
+    private final WishListRepository wishListRepository;
 
     // 회원가입
     @Transactional
@@ -37,8 +44,9 @@ public class MemberService {
     }
 
     @Transactional
-    public void addMemberReg(Member member, MemberRequestDto memberRequestDto){
+    public Member addMemberReg(Member member, MemberRequestDto memberRequestDto){
         member.updateMember(memberRequestDto.getName(), memberRequestDto.getImg(), memberRequestDto.getStack());
+        return member;
     }
 
     private void validateDuplicateMember(Member member) {
@@ -55,8 +63,10 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMember(Member member, MemberChangeRequestDto memberChangeRequestDto) {
-            member.updateMember(memberChangeRequestDto.getName(), memberChangeRequestDto.getImg(), memberChangeRequestDto.getStack());
+    public Member updateMember(Long id, MemberChangeRequestDto memberChangeRequestDto) {
+        Optional<Member> findMember = memberRepository.findById(id);
+        findMember.get().updateMember(memberChangeRequestDto.getName(), memberChangeRequestDto.getImg(), memberChangeRequestDto.getStack());
+            return findMember.get();
     }
 
     @Transactional(readOnly = true)
@@ -69,5 +79,16 @@ public class MemberService {
     public List<Member> findLikePost(Long id) {
         Optional<List<Member>> memberLikePost = memberRepository.findMemberLikePost(id);
         return memberLikePost.get();
+    }
+
+    @Transactional
+    public WishList createLikePost(Long member_id, Long post_id) {
+        Optional<Member> memberId = memberRepository.findById(member_id);
+        Optional<Post> postId = postRepository.findById(post_id);
+        WishList wishList = WishList.builder()
+                .member(memberId.get())
+                .post(postId.get())
+                .build();
+        return wishListRepository.save(wishList);
     }
 }
