@@ -89,4 +89,9 @@ public class MemberService {
                 .build();
         return wishListRepository.save(wishList);
     }
+
+    @Transactional
+    public void deleteLikePost(Long wishList_id) {
+        wishListRepository.deleteById(wishList_id);
+    }
 }

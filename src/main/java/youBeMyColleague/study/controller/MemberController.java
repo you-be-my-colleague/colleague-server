@@ -57,20 +57,4 @@ public class MemberController {
                 .map(MemberResponseDto::new)
                 .collect(Collectors.toList())));
     }
-
-    //마이페이지 내 관심글
-    @GetMapping("/my-page/my-likes/{id}")
-    public ResponseEntity<Wrap> selectLikePost(@PathVariable Long id){
-        List<Member> memberLikePost = memberService.findLikePost(id);
-        return ResponseEntity.ok().body(new Wrap(memberLikePost.stream()
-                .map(MemberResponseDto::new)
-                .collect(Collectors.toList())));
-    }
-
-    //마이페이지 내 관심글 등록
-    @PostMapping("/post-like/{member_id}/{post_id}")
-    public String createLikePost (@PathVariable Long member_id,@PathVariable Long post_id){
-        memberService.createLikePost(member_id,post_id);
-        return "";
-    }
 }
