@@ -40,7 +40,9 @@ public class PostService {
     }
     //게시글 상세
     public List<Post> findPost(Long postId) {
-        Optional<List<Post>> postWithAllComment = postRepository.findPostWithAllComment(postId);
+        Optional<List<Post>> postWithAllComment = Optional.ofNullable(postRepository.findPostWithAllComment(postId).orElseThrow(
+                () -> new IllegalStateException("게시글이 존재하지 않습니다.")
+        ));
         return postWithAllComment.get();
     }
     //전체 게시글 불러오기
@@ -51,7 +53,9 @@ public class PostService {
     //게시글 수정
     @Transactional
     public Post updatePost(Long postId, PostRequestDto postRequestDto) {
-        Optional<Post> post = postRepository.findById(postId);
+        Optional<Post> post = Optional.ofNullable(postRepository.findById(postId).orElseThrow(
+                () -> new IllegalStateException("게시글이 존재하지 않습니다.")
+        ));
         post.get().updatePost(postRequestDto);
         return post.get();
     }
@@ -59,7 +63,9 @@ public class PostService {
     //게시글 상태 수정
     @Transactional
     public Post updatePostStatus(Long postId,PostRequestDto postRequestDto) {
-        Optional<Post> post = postRepository.findById(postId);
+        Optional<Post> post = Optional.ofNullable(postRepository.findById(postId)).orElseThrow(
+                () -> new IllegalStateException("게시글이 존재하지 않습니다.")
+        );
         post.get().updatePostStatus(postRequestDto);
         return post.get();
     }

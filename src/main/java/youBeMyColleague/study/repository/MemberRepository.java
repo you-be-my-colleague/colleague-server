@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
     List<Member> findByName (String name);
-    Member findByEmail(String email);
+    Optional<Member> findByEmail(String email);
     void deleteByEmail(String email);
 
     @Query("select distinct m from Member m left join fetch m.posts where m.id=:id")
