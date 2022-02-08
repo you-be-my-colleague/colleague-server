@@ -3,6 +3,7 @@ package youBeMyColleague.study.dto;
 import lombok.Data;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
+import youBeMyColleague.study.domain.Role;
 import youBeMyColleague.study.domain.TechStack;
 
 import java.sql.Timestamp;
@@ -17,7 +18,7 @@ public class MemberResponseDto {
 
     private String email;
 
-    private String role;
+    private Role role;
 
     private String img;
 
