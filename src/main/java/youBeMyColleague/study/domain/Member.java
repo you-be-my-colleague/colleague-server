@@ -21,8 +21,10 @@ public class Member {
     private String name;
 
     private String email;
-    
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
     private String img;
 
@@ -52,9 +54,18 @@ public class Member {
         this.img = img;
         this.stack = stack;
     }
+    public Member update(String name, String picture) {
+        this.name = name;
+        this.img = picture;
+
+        return this;
+    }
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
 
     @Builder
-    public Member(String name, String email, String img, String role,TechStack stack, Timestamp createDate){
+    public Member(String name, String email, String img, Role role,TechStack stack, Timestamp createDate){
         this.name = name;
         this.email = email;
         this.img = img;
@@ -62,4 +73,5 @@ public class Member {
         this.createDate = createDate;
         this.stack = stack;
     }
+
 }
