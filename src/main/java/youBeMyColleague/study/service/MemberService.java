@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.domain.Member;
 
 import youBeMyColleague.study.domain.Post;
+import youBeMyColleague.study.domain.Role;
 import youBeMyColleague.study.domain.WishList;
 
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
@@ -35,7 +36,7 @@ public class MemberService {
         Member member = Member.builder()
                 .name(memberRequestDto.getName())
                 .img(memberRequestDto.getImg())
-                .role("ROLE_USER")
+                .role(Role.USER)
                 .stack(memberRequestDto.getStack())
                 .build();
         validateDuplicateMember(member);
