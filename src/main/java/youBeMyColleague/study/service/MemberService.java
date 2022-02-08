@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.domain.Member;
+
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.WishList;
+
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
 import youBeMyColleague.study.repository.MemberRepository;
