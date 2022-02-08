@@ -35,7 +35,7 @@ public class MemberService {
         Member member = Member.builder()
                 .name(memberRequestDto.getName())
                 .img(memberRequestDto.getImg())
-                .role(Role.USER)
+                .role("ROLE_USER")
                 .stack(memberRequestDto.getStack())
                 .build();
         validateDuplicateMember(member);
@@ -90,5 +90,10 @@ public class MemberService {
                 .post(postId.get())
                 .build();
         return wishListRepository.save(wishList);
+    }
+
+    @Transactional
+    public void deleteLikePost(Long wishList_id) {
+        wishListRepository.deleteById(wishList_id);
     }
 }
