@@ -3,6 +3,7 @@ package youBeMyColleague.study.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import youBeMyColleague.study.domain.Post;
@@ -36,6 +37,7 @@ public class PostController {
     public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto,
                                              @PathVariable("creater_id") Long createrId) {
         postService.createPost(postRequestDto, createrId);
+//        ResponseEntity.badRequest().body("{result:fail, code:-1009, msg : blabla}");
         return ResponseEntity.ok().body("{'result':'success'}");
     }
 

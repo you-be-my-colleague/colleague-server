@@ -29,6 +29,7 @@ public class HomeController {
                 .collect(Collectors.toList())));
     }
 
+
     @GetMapping(value = "/login/oauth2/code/kakao")
     public String oauthKakaoLogin(@RequestParam("code") String code) {
         log.debug("카카오 로그인 이실행이 되었는지 확인하는 로그");

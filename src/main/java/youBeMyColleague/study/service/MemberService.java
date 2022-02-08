@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.domain.Member;
 
 import youBeMyColleague.study.domain.Post;
+import youBeMyColleague.study.domain.Role;
 import youBeMyColleague.study.domain.WishList;
 
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
@@ -26,7 +27,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-
     private final WishListRepository wishListRepository;
 
     // 회원가입

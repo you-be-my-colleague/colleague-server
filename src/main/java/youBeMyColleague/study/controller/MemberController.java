@@ -1,6 +1,7 @@
 package youBeMyColleague.study.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import youBeMyColleague.study.domain.Member;
@@ -40,18 +41,20 @@ public class MemberController {
     @DeleteMapping("/my-page/{id}")
     public String deleteMember(@PathVariable Long id){
         memberService.DeleteMember(id);
-        return "삭제 완료";}
+        return "삭제 완료";
+    }
 
     //마이페이지 설정
     @PatchMapping("/my-page/{id}")
     public String updateMember(@PathVariable Long id,
                                @RequestBody MemberChangeRequestDto memberChangeRequestDto){
         memberService.updateMember(id, memberChangeRequestDto);
-        return "수정 완료";}
+        return "수정 완료";
+    }
 
     //마이페이지 내작성글
     @GetMapping("/my-page/post/my-posts/{id}")
-    public ResponseEntity<Wrap> selecPost(@PathVariable Long id){
+    public ResponseEntity<Wrap> selectPost(@PathVariable Long id){
         List<Member> members = memberService.findMemberPost(id);
         return ResponseEntity.ok().body(new Wrap(members.stream()
                 .map(MemberResponseDto::new)
@@ -73,4 +76,5 @@ public class MemberController {
         memberService.createLikePost(member_id,post_id);
         return "";
     }
+
 }
