@@ -46,8 +46,7 @@ public class MemberController {
     @PatchMapping("/my-page/{id}")
     public String updateMember(@PathVariable Long id,
                                @RequestBody MemberChangeRequestDto memberChangeRequestDto){
-        Optional<Member> findMember = memberRepository.findById(id);
-        memberService.updateMember(findMember.get(), memberChangeRequestDto);
+        memberService.updateMember(id, memberChangeRequestDto);
         return "수정 완료";}
 
     //마이페이지 내작성글
@@ -64,7 +63,14 @@ public class MemberController {
     public ResponseEntity<Wrap> selectLikePost(@PathVariable Long id){
         List<Member> memberLikePost = memberService.findLikePost(id);
         return ResponseEntity.ok().body(new Wrap(memberLikePost.stream()
-                .map(Member::getWishLists)
+                .map(MemberResponseDto::new)
                 .collect(Collectors.toList())));
+    }
+
+    //마이페이지 내 관심글 등록
+    @PostMapping("/post-like/{member_id}/{post_id}")
+    public String createLikePost (@PathVariable Long member_id,@PathVariable Long post_id){
+        memberService.createLikePost(member_id,post_id);
+        return "";
     }
 }
