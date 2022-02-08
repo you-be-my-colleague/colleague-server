@@ -35,7 +35,7 @@ public class MemberService {
         Member member = Member.builder()
                 .name(memberRequestDto.getName())
                 .img(memberRequestDto.getImg())
-                .role("ROLE_USER")
+                .role(Role.USER)
                 .stack(memberRequestDto.getStack())
                 .build();
         validateDuplicateMember(member);
@@ -66,7 +66,7 @@ public class MemberService {
     public Member updateMember(Long id, MemberChangeRequestDto memberChangeRequestDto) {
         Optional<Member> findMember = memberRepository.findById(id);
         findMember.get().updateMember(memberChangeRequestDto.getName(), memberChangeRequestDto.getImg(), memberChangeRequestDto.getStack());
-            return findMember.get();
+        return findMember.get();
     }
 
     @Transactional(readOnly = true)
@@ -90,10 +90,5 @@ public class MemberService {
                 .post(postId.get())
                 .build();
         return wishListRepository.save(wishList);
-    }
-
-    @Transactional
-    public void deleteLikePost(Long wishList_id) {
-        wishListRepository.deleteById(wishList_id);
     }
 }
