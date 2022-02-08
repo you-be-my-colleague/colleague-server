@@ -60,6 +60,7 @@ public class MemberController {
                 .map(MemberResponseDto::new)
                 .collect(Collectors.toList())));
     }
+<<<<<<< HEAD
 
     //마이페이지 내 관심글
     @GetMapping("/my-page/my-likes/{id}")
@@ -77,4 +78,6 @@ public class MemberController {
         return "";
     }
 
+=======
+>>>>>>> 12d0d756e0b124f7c60387d5d159971ae1510496
 }
