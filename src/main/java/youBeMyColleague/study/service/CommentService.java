@@ -27,7 +27,9 @@ public class CommentService {
     //코멘트 만들기
     @Transactional
     public Comment createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
-        Optional<Post> findPost = postRepository.findById(postId);
+        Optional<Post> findPost = Optional.ofNullable(postRepository.findById(postId).orElseThrow(
+                () -> new IllegalStateException("게시글이 존재하지 않습니다.")
+        ));
         Optional<Member> findMember = memberRepository.findById(memberId);
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
@@ -51,11 +53,6 @@ public class CommentService {
     public Comment updateComment(Long commentId,CommentRequestDto commentRequestDto) {
         return commentRepository.findById(commentId).get().updateComment(commentRequestDto);
     }
-
-
-
-
-
 
 }
 

@@ -2,6 +2,7 @@ package youBeMyColleague.study.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import youBeMyColleague.study.domain.Post;
@@ -9,18 +10,20 @@ import youBeMyColleague.study.dto.PostRequestDto;
 import youBeMyColleague.study.dto.PostResponseDto;
 import youBeMyColleague.study.dto.Wrap;
 import youBeMyColleague.study.service.PostService;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
 
     private final PostService postService;
 
     //1. 상세게시글 조회
-    @GetMapping("/post-detail/{post_id}")
+    @GetMapping("/post/{post_id}")
     public ResponseEntity<Wrap> findOnePost(@PathVariable("post_id") Long postId) {
         List<Post> post = postService.findPost(postId);
         return ResponseEntity.ok().body(new Wrap(post.stream()
