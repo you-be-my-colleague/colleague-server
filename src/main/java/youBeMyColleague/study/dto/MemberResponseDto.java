@@ -4,7 +4,8 @@ import lombok.Data;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.Role;
-import youBeMyColleague.study.domain.TechStack;
+
+
 
 import java.sql.Timestamp;
 import java.util.List;
