@@ -4,7 +4,7 @@ import lombok.Data;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.Role;
-
+import youBeMyColleague.study.domain.TechStack;
 
 
 import java.sql.Timestamp;
@@ -33,7 +33,7 @@ public class MemberResponseDto {
         this.id = member.getId();
         this.name = member.getName();
         this.email = member.getEmail();
-        this.role = member.getRole();
+        //this.role = member.getRole();
         this.img = member.getImg();
         this.createDate = member.getCreateDate();
         this.stack = member.getStack();

@@ -22,14 +22,14 @@ public class CommentController {
         return ResponseEntity.ok().body("{'result':'success'}");
     }
 
-    //    2. 댓글 수정
+    //2. 댓글 수정
     @PatchMapping("/comment/{comment_id}")
     public ResponseEntity<String> updateComment(@PathVariable("comment_id") Long commnetId,
                                                 @RequestBody CommentRequestDto commentRequestDto) {
         commentService.updateComment(commnetId,commentRequestDto);
         return ResponseEntity.ok().body("{'result':'success'}");
     }
-//    3. 댓글 삭제
+//3. 댓글 삭제
     @DeleteMapping("/comment/{comment_id}/{post_id}")
     public ResponseEntity<String> deleteComment(@PathVariable("comment_id") Long commnetId,
                                                 @PathVariable("post_id") Long postId) {

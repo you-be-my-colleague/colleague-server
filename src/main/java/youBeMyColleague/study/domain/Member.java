@@ -2,6 +2,7 @@ package youBeMyColleague.study.domain;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Member {
 
     @Id @GeneratedValue
@@ -23,7 +24,7 @@ public class Member {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Nullable
     private Role role;
 
     private String img;
@@ -34,13 +35,13 @@ public class Member {
     @Embedded
     private TechStack stack;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
     
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<WishList> wishLists = new ArrayList<>();
 
 
@@ -60,16 +61,16 @@ public class Member {
 
         return this;
     }
-    public String getRoleKey() {
-        return this.role.getKey();
-    }
+//    public String getRoleKey() {
+//        return this.role.getKey();
+//    }
 
     @Builder
     public Member(String name, String email, String img, Role role,TechStack stack, Timestamp createDate){
         this.name = name;
         this.email = email;
         this.img = img;
-        this.role = role;
+        //this.role = role;
         this.createDate = createDate;
         this.stack = stack;
     }
