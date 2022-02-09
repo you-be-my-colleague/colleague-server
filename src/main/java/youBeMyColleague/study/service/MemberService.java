@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import youBeMyColleague.study.advice.exception.WishListCanNotDeleteException;
 import youBeMyColleague.study.domain.Member;
 
 import youBeMyColleague.study.domain.Post;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class MemberService {
@@ -30,7 +31,6 @@ public class MemberService {
     private final WishListRepository wishListRepository;
 
     // 회원가입
-    @Transactional
     public Member join(MemberRequestDto memberRequestDto) {
         Member member = Member.builder()
                 .name(memberRequestDto.getName())
@@ -43,7 +43,6 @@ public class MemberService {
         return member;
     }
 
-    @Transactional
     public Member addMemberReg(Member member, MemberRequestDto memberRequestDto){
         member.updateMember(memberRequestDto.getName(), memberRequestDto.getImg(), memberRequestDto.getStack());
         return member;
@@ -56,12 +55,10 @@ public class MemberService {
         }
     }
 
-    @Transactional
     public void DeleteMember(Long id) {
         memberRepository.deleteById(id);
     }
 
-    @Transactional
     public Member updateMember(Long id, MemberChangeRequestDto memberChangeRequestDto) {
         Optional<Member> findMember = memberRepository.findById(id);
         findMember.get().updateMember(memberChangeRequestDto.getName(), memberChangeRequestDto.getImg(), memberChangeRequestDto.getStack());
@@ -73,19 +70,16 @@ public class MemberService {
         Optional<List<Member>> memberPost = memberRepository.findMemberPost(id);
         return memberPost.get();
     }
-
+    @Transactional(readOnly = true)
     public List<WishList> findLikePost(Long member_id,Long post_id) {
         Optional<List<WishList>> memberFindWish = wishListRepository.findPost(member_id,post_id);
         return memberFindWish.get();
     }
 
-    @Transactional
+
     public WishList createLikePost(Long member_id, Long post_id) {
         Optional<Member> member = memberRepository.findById(member_id);
         Optional<Post> post = postRepository.findById(post_id);
-        if (!post.isPresent() || !member.isPresent()){
-            throw new IllegalStateException("해당 포스트가 존재하지 않습니다.");
-        }
         WishList wishList = WishList.builder()
                 .member(member.get())
                 .post(post.get())
@@ -93,12 +87,11 @@ public class MemberService {
         return wishListRepository.save(wishList);
     }
 
-    @Transactional
+
     public void deleteLikePost(Long member_id, Long post_id) {
-        Optional<WishList> findWish = wishListRepository.findWishListByMemberWithPost(member_id,post_id);
-        if (!findWish.isPresent()){
-            throw new IllegalStateException("관심글을 찾을 수 없습니다");
-        }
+        Optional<WishList> findWish = Optional.ofNullable(wishListRepository.findWishListByMemberWithPost(member_id, post_id)
+                .orElseThrow(WishListCanNotDeleteException::new));
+
         findWish.get().deleteWish();
         wishListRepository.deleteById(findWish.get().getId());
     }
