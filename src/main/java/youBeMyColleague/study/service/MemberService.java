@@ -75,7 +75,7 @@ public class MemberService {
     }
 
     public List<WishList> findLikePost(Long member_id,Long post_id) {
-        Optional<List<WishList>> memberFindWish = wishListRepository.finyPost(member_id,post_id);
+        Optional<List<WishList>> memberFindWish = wishListRepository.findPost(member_id,post_id);
         return memberFindWish.get();
     }
 

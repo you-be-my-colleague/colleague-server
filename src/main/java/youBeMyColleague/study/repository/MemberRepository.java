@@ -14,12 +14,12 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
     Optional<Member> findByEmail(String email);
     void deleteByEmail(String email);
 
-    @Query("select distinct m from Member m left join fetch m.posts where m.id=:id")
-    Optional<List<Member>> findMemberPost(@Param("id") Long id);
+    @Query("select distinct m from Member m left join fetch m.posts where m.id=:memberId")
+    Optional<List<Member>> findMemberPost(@Param("id") Long memberId);
 
-    @Query("select m from Member m where m.id = :id")
-    MemberResponseDto findOneMember(@Param("id") Long id);
+    @Query("select m from Member m where m.id = :memberId")
+    MemberResponseDto findOneMember(@Param("id") Long memberId);
 
-    @Query("select distinct m from Member m left join fetch m.wishLists where m.id = :id")
-    Optional<List<Member>> findMemberLikePost(@Param("id") Long id);
+    @Query("select distinct m from Member m left join fetch m.wishLists where m.id = :memberId")
+    Optional<List<Member>> findMemberLikePost(@Param("id") Long memberId);
 }
