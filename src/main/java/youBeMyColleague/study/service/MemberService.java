@@ -95,7 +95,7 @@ public class MemberService {
 
 
     @Transactional(readOnly = true)
-    public Optional<MemberResponseDto> findMember(Long id) {
-        return Optional.of(memberRepository.findOneMember(id)).orElseThrow(UserNotFoundException::new);
+    public Optional<MemberResponseDto> findMember(Long member_id) {
+        return Optional.of(memberRepository.findOneMember(member_id)).orElseThrow(UserNotFoundException::new);
     }
 }

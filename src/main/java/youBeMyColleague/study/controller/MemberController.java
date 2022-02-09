@@ -43,9 +43,9 @@ public class MemberController {
     }
 
     //마이페이지
-    @GetMapping("/my-page/{id}")
-    public ResponseEntity<GetMember> settingMember(@PathVariable Long id){
-        MemberResponseDto findMember = memberService.findMember(id).orElseThrow(UserNotFoundException::new);
+    @GetMapping("/my-page/{member_id}")
+    public ResponseEntity<GetMember> settingMember(@PathVariable Long member_id){
+        MemberResponseDto findMember = memberService.findMember(member_id).orElseThrow(UserNotFoundException::new);
         return new ResponseEntity<>(new GetMember(true,"마이페이지 조회 완료",findMember),HttpStatus.OK);
     }
     //회원탈퇴
