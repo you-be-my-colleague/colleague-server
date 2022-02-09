@@ -8,15 +8,12 @@ import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
 import youBeMyColleague.study.dto.MemberResponseDto;
-import youBeMyColleague.study.model.CreateMemberSuccess;
 import youBeMyColleague.study.model.GetAllMember;
 import youBeMyColleague.study.model.GetMember;
 import youBeMyColleague.study.model.Success;
-import youBeMyColleague.study.repository.MemberRepository;
 import youBeMyColleague.study.service.MemberService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,22 +21,19 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberRepository memberRepository;
 
     // 추가회원가입
     @PatchMapping("/signup/{id}")
-    public ResponseEntity<CreateMemberSuccess> SignMember(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto) {
-        Optional<Member> findMember = memberRepository.findById(id);
-        memberService.addMemberReg(findMember.get(), memberRequestDto);
-
-        return new ResponseEntity<>(new CreateMemberSuccess(true,"추가 회원 가입 완료",findMember),HttpStatus.OK);
+    public ResponseEntity<Success> SignMember(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto) {
+        memberService.createMember(id, memberRequestDto);
+        return new ResponseEntity<>(new Success(true,"추가 회원 가입 완료"),HttpStatus.OK);
     }
 
     //마이페이지
     @GetMapping("/my-page/{id}")
     public ResponseEntity<GetMember> selectMember(@PathVariable Long id){
-        MemberResponseDto oneMember = memberRepository.findOneMember(id);
-        return ResponseEntity.ok().body(new GetMember(true,"마이페이지 조회 완료",oneMember));
+        MemberResponseDto findMember = memberService.fiMember(id);
+        return ResponseEntity.ok().body(new GetMember(true,"마이페이지 조회 완료",findMember));
     }
 
     //회원탈퇴
@@ -65,6 +59,4 @@ public class MemberController {
                 .map(MemberResponseDto::new)
                 .collect(Collectors.toList())));
     }
-
-
 }
