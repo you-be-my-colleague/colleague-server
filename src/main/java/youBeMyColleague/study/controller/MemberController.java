@@ -8,15 +8,12 @@ import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
 import youBeMyColleague.study.dto.MemberResponseDto;
-import youBeMyColleague.study.model.CreateMemberSuccess;
 import youBeMyColleague.study.model.GetAllMember;
 import youBeMyColleague.study.model.GetMember;
 import youBeMyColleague.study.model.Success;
-import youBeMyColleague.study.repository.MemberRepository;
 import youBeMyColleague.study.service.MemberService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,19 +23,19 @@ public class MemberController {
     private final MemberService memberService;
 
     // 추가회원가입
-    @PatchMapping("/signup/{memberId}")
-    public ResponseEntity<CreateMemberSuccess> SignMember(@PathVariable Long memberId, @RequestBody MemberRequestDto memberRequestDto) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        memberService.addMemberReg(findMember.get(), memberRequestDto);
-        return new ResponseEntity<>(new CreateMemberSuccess(true,"추가 회원 가입 완료",findMember),HttpStatus.OK);
+
+    @PatchMapping("/signup/{id}")
+    public ResponseEntity<Success> SignMember(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto) {
+        memberService.createMember(id, memberRequestDto);
+        return new ResponseEntity<>(new Success(true,"추가 회원 가입 완료"),HttpStatus.OK);
     }
 
     //마이페이지
-    @GetMapping("/my-page/{memberId}")
-    public ResponseEntity<GetMember> selectMember(@PathVariable Long memberId){
-        MemberResponseDto findMember = memberRepository.findOneMember(memberId);
-        return new ResponseEntity<>(new GetMember(true,"마이페이지 조회 완료",findMember),
-                HttpStatus.OK);
+    @GetMapping("/my-page/{id}")
+    public ResponseEntity<GetMember> selectMember(@PathVariable Long id){
+        MemberResponseDto findMember = memberService.fiMember(id);
+        return ResponseEntity.ok().body(new GetMember(true,"마이페이지 조회 완료",findMember));
+
     }
 
     //회원탈퇴
@@ -64,6 +61,5 @@ public class MemberController {
                 .map(MemberResponseDto::new)
                 .collect(Collectors.toList())),HttpStatus.OK);
     }
-
-
 }
+

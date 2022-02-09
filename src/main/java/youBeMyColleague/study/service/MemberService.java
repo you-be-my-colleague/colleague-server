@@ -13,6 +13,7 @@ import youBeMyColleague.study.domain.WishList;
 
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
+import youBeMyColleague.study.dto.MemberResponseDto;
 import youBeMyColleague.study.repository.MemberRepository;
 import youBeMyColleague.study.repository.PostRepository;
 import youBeMyColleague.study.repository.WishListRepository;
@@ -94,5 +95,17 @@ public class MemberService {
 
         findWish.get().deleteWish();
         wishListRepository.deleteById(findWish.get().getId());
+    }
+
+    public Member createMember(Long id, MemberRequestDto memberRequestDto) {
+        Optional<Member> createMember = memberRepository.findById(id);
+        addMemberReg(createMember.get(), memberRequestDto);
+        return createMember.get();
+
+    }
+
+    public MemberResponseDto fiMember(Long id) {
+        MemberResponseDto findMember = memberRepository.findOneMember(id);
+        return findMember;
     }
 }
