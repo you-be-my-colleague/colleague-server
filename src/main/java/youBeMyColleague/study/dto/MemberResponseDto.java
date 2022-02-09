@@ -33,7 +33,7 @@ public class MemberResponseDto {
         this.id = member.getId();
         this.name = member.getName();
         this.email = member.getEmail();
-        //this.role = member.getRole();
+        this.role = member.getRole();
         this.img = member.getImg();
         this.createDate = member.getCreateDate();
         this.stack = member.getStack();

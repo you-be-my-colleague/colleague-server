@@ -8,7 +8,6 @@ import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.RecruitmentStatus;
 import youBeMyColleague.study.dto.PostRequestDto;
-import youBeMyColleague.study.dto.PostResponseDto;
 import youBeMyColleague.study.repository.MemberRepository;
 import youBeMyColleague.study.repository.PostRepository;
 
@@ -40,7 +39,7 @@ public class PostService {
     }
     //게시글 상세
     public Optional<List<Post>> findPost(Long postId) {
-        Optional<List<Post>> postWithAllComment = postRepository.findPostWithAllComment(postId)
+        Optional<List<Post>> postWithAllComment = postRepository.findPostWithAllComment(postId);
         postWithAllComment.get().get(0).addViewsCount(); //조회수
         return postWithAllComment;
     }

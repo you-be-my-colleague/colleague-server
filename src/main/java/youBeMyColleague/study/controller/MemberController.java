@@ -23,6 +23,7 @@ public class MemberController {
     private final MemberService memberService;
 
     // 추가회원가입
+
     @PatchMapping("/signup/{id}")
     public ResponseEntity<Success> SignMember(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto) {
         memberService.createMember(id, memberRequestDto);
@@ -34,29 +35,31 @@ public class MemberController {
     public ResponseEntity<GetMember> selectMember(@PathVariable Long id){
         MemberResponseDto findMember = memberService.fiMember(id);
         return ResponseEntity.ok().body(new GetMember(true,"마이페이지 조회 완료",findMember));
+
     }
 
     //회원탈퇴
-    @DeleteMapping("/my-page/{id}")
-    public ResponseEntity<Success> deleteMember(@PathVariable Long id){
-        memberService.DeleteMember(id);
+    @DeleteMapping("/my-page/{memberId}")
+    public ResponseEntity<Success> deleteMember(@PathVariable Long memberId){
+        memberService.DeleteMember(memberId);
         return new ResponseEntity<>(new Success(true,"회원 탈퇴 완료"), HttpStatus.OK);
     }
 
     //마이페이지 설정
-    @PatchMapping("/my-page/{id}")
-    public ResponseEntity<Success> updateMember(@PathVariable Long id,
+    @PatchMapping("/my-page/{memberId}")
+    public ResponseEntity<Success> updateMember(@PathVariable Long memberId,
                                @RequestBody MemberChangeRequestDto memberChangeRequestDto){
-        memberService.updateMember(id, memberChangeRequestDto);
+        memberService.updateMember(memberId, memberChangeRequestDto);
         return new ResponseEntity<>(new Success(true,"회원정보 수정 완료"),HttpStatus.OK);
     }
 
     //마이페이지 내작성글
-    @GetMapping("/my-page/post/my-posts/{id}")
-    public ResponseEntity<GetAllMember> selectPost(@PathVariable Long id){
-        List<Member> members = memberService.findMemberPost(id);
-        return ResponseEntity.ok().body(new GetAllMember(true,"내 작성글 조회완료",members.stream()
+    @GetMapping("/my-page/post/my-posts/{memberId}")
+    public ResponseEntity<GetAllMember> selectPost(@PathVariable Long memberId){
+        List<Member> members = memberService.findMemberPost(memberId);
+        return new ResponseEntity<>(new GetAllMember(true,"내 작성글 조회완료",members.stream()
                 .map(MemberResponseDto::new)
-                .collect(Collectors.toList())));
+                .collect(Collectors.toList())),HttpStatus.OK);
     }
 }
+

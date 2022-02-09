@@ -15,7 +15,7 @@ public interface WishListRepository extends JpaRepository<WishList,Long> {
     void deleteWishPost(@Param("member_id") Long member_id,@Param("post_id") Long post_id);
 
     @Query("select w from WishList w  where w.member.id = :member_id and w.post.id = :post_id")
-    Optional<List<WishList>> finyPost(@Param("member_id") Long member_id,@Param("post_id") Long post_id);
+    Optional<List<WishList>> findPost(@Param("member_id") Long member_id,@Param("post_id") Long post_id);
 
     @Query("select w from WishList w where w.member.id = :member_id and w.post.id = :post_id")
     Optional<WishList> findWishListByMemberWithPost(@Param("member_id") Long member_id,@Param("post_id") Long post_id);
