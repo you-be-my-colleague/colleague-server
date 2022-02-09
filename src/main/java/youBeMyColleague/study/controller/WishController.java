@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import youBeMyColleague.study.domain.WishList;
 import youBeMyColleague.study.dto.WishResponseDto;
 import youBeMyColleague.study.model.GetAllWishList;
+import youBeMyColleague.study.model.Success;
 import youBeMyColleague.study.service.MemberService;
 
 import java.util.List;
@@ -28,15 +29,15 @@ public class WishController {
 
     //관심글 등록
     @PostMapping("/post-like/{member_id}/{post_id}")
-    public ResponseEntity<String> createLikePost (@PathVariable Long member_id,@PathVariable Long post_id){
+    public ResponseEntity<Success> createLikePost (@PathVariable Long member_id, @PathVariable Long post_id){
         memberService.createLikePost(member_id,post_id);
-        return ResponseEntity.ok().body("{'result':'success'}");
+        return ResponseEntity.ok().body(new Success(true,"내 관심글 등록 성공"));
     }
 
     // 관심글 삭제
     @DeleteMapping("/my-page/my-likes/{member_id}/{post_id}")
-    public ResponseEntity<String> deleteLikePost(@PathVariable Long member_id, @PathVariable Long post_id){
+    public ResponseEntity<Success> deleteLikePost(@PathVariable Long member_id, @PathVariable Long post_id){
         memberService.deleteLikePost(member_id,post_id);
-        return ResponseEntity.ok().body("{'result':'success'}");
+        return ResponseEntity.ok().body(new Success(true, "내 관심글 삭제 성공"));
     }
 }
