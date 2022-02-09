@@ -50,6 +50,11 @@ public class ExceptionController {
     public ResponseEntity<Fail> WishListNotFoundException(WishListNotFoundException e) {
         return new ResponseEntity<>(new Fail("관심글을 찾을 수 없습니다. 해당 게시글이 존재하지 않거나 잘못된 요청입니다."), HttpStatus.OK);
     }
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<Fail> CommentNotFoundException(CommentNotFoundException e){
+        return new ResponseEntity<>(new Fail("해당 댓글이 존재하지 않습니다. 해당 댓글이 존재하지 않거나 잘못된 요청입니다."),HttpStatus.OK);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Fail> defaultException(Exception e) {
         return new ResponseEntity<>(new Fail("알수없는 오류입니다. 관리자 문의 부탁드립니다."), HttpStatus.OK);

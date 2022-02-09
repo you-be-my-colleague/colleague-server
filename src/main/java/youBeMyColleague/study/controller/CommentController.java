@@ -40,7 +40,7 @@ public class CommentController {
         commentService.updateComment(commnetId,commentRequestDto);
         return new ResponseEntity<>(new Success(true,"댓글 수정 완료"),HttpStatus.OK);
     }
-//3. 댓글 삭제
+    //3. 댓글 삭제
     @DeleteMapping("/comment/{comment_id}/{post_id}")
     public ResponseEntity<Success> deleteComment(@PathVariable("comment_id") Long commnetId,
                                                 @PathVariable("post_id") Long postId) {
