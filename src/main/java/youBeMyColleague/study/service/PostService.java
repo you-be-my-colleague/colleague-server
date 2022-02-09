@@ -25,7 +25,7 @@ public class PostService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Post createPost(PostRequestDto postRequestDto, Long createrId) {
+    public Long createPost(PostRequestDto postRequestDto, Long createrId) {
         Optional<Member> member = memberRepository.findById(createrId);
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
@@ -36,13 +36,14 @@ public class PostService {
                 .postStatus(RecruitmentStatus.CONTINUE)
                 .member(member.get())
                 .build();
-        return postRepository.save(post);
+        return postRepository.save(post).getId();
     }
     //게시글 상세
     public List<Post> findPost(Long postId) {
         Optional<List<Post>> postWithAllComment = Optional.ofNullable(postRepository.findPostWithAllComment(postId).orElseThrow(
                 () -> new IllegalStateException("게시글이 존재하지 않습니다.")
         ));
+        postWithAllComment.get().get(0).addViewsCount(); //조회수
         return postWithAllComment.get();
     }
     //전체 게시글 불러오기
