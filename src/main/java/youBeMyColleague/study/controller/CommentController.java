@@ -2,9 +2,11 @@ package youBeMyColleague.study.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import youBeMyColleague.study.dto.CommentRequestDto;
+import youBeMyColleague.study.model.Success;
 import youBeMyColleague.study.service.CommentService;
 
 @RestController
@@ -15,26 +17,26 @@ public class CommentController {
 
     //1. 댓글 등록
     @PostMapping("/comment/{creater_id}/{post_id}")
-    public ResponseEntity<String> createComment(@PathVariable("creater_id") Long createrId,
-                                                @PathVariable("post_id") Long post_id,
-                                                @RequestBody CommentRequestDto commentRequestDto) {
+    public ResponseEntity<Success> createComment(@PathVariable("creater_id") Long createrId,
+                                                 @PathVariable("post_id") Long post_id,
+                                                 @RequestBody CommentRequestDto commentRequestDto) {
         commentService.createComment(commentRequestDto, post_id, createrId);
-        return ResponseEntity.ok().body("{'result':'success'}");
+        return new ResponseEntity<>(new Success(true,"댓글 등록 완료"), HttpStatus.OK);
     }
 
     //2. 댓글 수정
     @PatchMapping("/comment/{comment_id}")
-    public ResponseEntity<String> updateComment(@PathVariable("comment_id") Long commnetId,
+    public ResponseEntity<Success> updateComment(@PathVariable("comment_id") Long commnetId,
                                                 @RequestBody CommentRequestDto commentRequestDto) {
         commentService.updateComment(commnetId,commentRequestDto);
-        return ResponseEntity.ok().body("{'result':'success'}");
+        return new ResponseEntity<>(new Success(true,"댓글 수정 완료"),HttpStatus.OK);
     }
 //3. 댓글 삭제
     @DeleteMapping("/comment/{comment_id}/{post_id}")
-    public ResponseEntity<String> deleteComment(@PathVariable("comment_id") Long commnetId,
+    public ResponseEntity<Success> deleteComment(@PathVariable("comment_id") Long commnetId,
                                                 @PathVariable("post_id") Long postId) {
         commentService.deleteComment(commnetId,postId);
-        return ResponseEntity.ok().body("{'result':'success'}");
+        return new ResponseEntity<>(new Success(true,"댓글 삭제 완료"),HttpStatus.OK);
     }
 
 }
