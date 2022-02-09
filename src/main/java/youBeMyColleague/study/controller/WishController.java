@@ -41,7 +41,7 @@ public class WishController {
     }
 
     // 관심글 삭제
-    @DeleteMapping("/my-page/my-likes/{member_id}/{post_id}")
+    @DeleteMapping("/post-like/{member_id}/{post_id}")
     public ResponseEntity<Success> deleteLikePost(@PathVariable Long member_id, @PathVariable Long post_id){
         wishService.deleteLikePost(member_id,post_id);
         return new ResponseEntity<>(new Success(true, "내 관심글 삭제 성공"),HttpStatus.OK);
