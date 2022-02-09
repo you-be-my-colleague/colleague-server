@@ -1,6 +1,7 @@
 package youBeMyColleague.study.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,24 +20,23 @@ import youBeMyColleague.study.service.MemberService;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
 
     // 추가회원가입
-
     @PatchMapping("/signup/{memberId}")
     public ResponseEntity<Success> signMember(@PathVariable Long memberId, @RequestBody MemberRequestDto memberRequestDto) {
         if (memberRequestDto.getName().isEmpty()) {
-            throw new EmptyValueException("닉네임을 입력 해주세요.");
+            throw new EmptyValueException();
         }
-        if (Objects.equals(memberService.findMember(memberId).getName(), memberRequestDto.getName())) {
-            throw new UserNameDuplicateException("이미 존재하는 닉네임 입니다.");
+        if (Objects.equals(memberService.findMember(memberId).get().getName(), memberRequestDto.getName())) {
+            throw new UserNameDuplicateException();
         }
         memberService.createMember(memberId, memberRequestDto);
         return new ResponseEntity<>(new Success(true,"추가 회원 가입 완료"),HttpStatus.OK);
@@ -45,8 +45,8 @@ public class MemberController {
     //마이페이지
     @GetMapping("/my-page/{id}")
     public ResponseEntity<GetMember> settingMember(@PathVariable Long id){
-        MemberResponseDto findMember = Optional.of(memberService.findMember(id)).orElseThrow(UserNotFoundException::new);
-        return ResponseEntity.ok().body(new GetMember(true,"마이페이지 조회 완료",findMember));
+        MemberResponseDto findMember = memberService.findMember(id).orElseThrow(UserNotFoundException::new);
+        return new ResponseEntity<>(new GetMember(true,"마이페이지 조회 완료",findMember),HttpStatus.OK);
     }
     //회원탈퇴
     @DeleteMapping("/my-page/{memberId}")
@@ -58,14 +58,15 @@ public class MemberController {
     //마이페이지 설정
     @PatchMapping("/my-page/{memberId}")
     public ResponseEntity<Success> updateMember(@PathVariable Long memberId,
-                               @RequestBody MemberChangeRequestDto memberChangeRequestDto){
-        if (memberChangeRequestDto.getName().isEmpty()) {
-            throw new EmptyValueException("닉네임을 입력 해주세요.");
+                               @RequestBody MemberRequestDto memberRequestDto){
+        log.info(memberRequestDto.getName());
+        if (memberRequestDto.getName().isEmpty()) {
+            throw new EmptyValueException();
         }
-        if (Objects.equals(memberService.findMember(memberId).getName(), memberChangeRequestDto.getName())) {
-            throw new UserNameDuplicateException("이미 존재하는 닉네임 입니다.");
+        if (Objects.equals(memberService.findMember(memberId).get().getName(), memberRequestDto.getName())) {
+            throw new UserNameDuplicateException();
         }
-        memberService.updateMember(memberId, memberChangeRequestDto);
+        memberService.updateMember(memberId, memberRequestDto);
         return new ResponseEntity<>(new Success(true,"회원정보 수정 완료"),HttpStatus.OK);
     }
 

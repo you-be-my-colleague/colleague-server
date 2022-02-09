@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import youBeMyColleague.study.advice.exception.WishListCanNotDeleteException;
+import youBeMyColleague.study.advice.exception.*;
 import youBeMyColleague.study.domain.Member;
 
 import youBeMyColleague.study.domain.Post;
@@ -43,68 +43,59 @@ public class MemberService {
         memberRepository.save(member);
         return member;
     }
-
-    public Member addMemberReg(Member member, MemberRequestDto memberRequestDto){
-        member.updateMember(memberRequestDto.getName(), memberRequestDto.getImg(), memberRequestDto.getStack());
-        return member;
+    //추가 회원가입
+    public void createMember(Long id, MemberRequestDto memberRequestDto) {
+        Member createMember = memberRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        createMember.updateMember(memberRequestDto);
     }
 
     private void validateDuplicateMember(Member member) {
         Optional<Member> findMembers = memberRepository.findByEmail(member.getEmail());
         if (findMembers.isPresent()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new UserNameDuplicateException();
         }
     }
 
     public void DeleteMember(Long id) {
         memberRepository.deleteById(id);
     }
-
-    public Member updateMember(Long id, MemberChangeRequestDto memberChangeRequestDto) {
-        Optional<Member> findMember = memberRepository.findById(id);
-        findMember.get().updateMember(memberChangeRequestDto.getName(), memberChangeRequestDto.getImg(), memberChangeRequestDto.getStack());
-        return findMember.get();
+    //멤버 정보 수정
+    public Member updateMember(Long id, MemberRequestDto memberRequestDto) {
+        Member findMember = memberRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        findMember.updateMember(memberRequestDto);
+        return findMember;
     }
-
+    //멤버 작성글 조회
     @Transactional(readOnly = true)
     public Optional<List<Member>> findMemberPost(Long id) {
-        Optional<List<Member>> memberPost = memberRepository.findMemberPost(id);
-        return memberPost;
+        return Optional.of(memberRepository.findMemberPost(id).orElseThrow(UserNotFoundException::new));
     }
+    //멤버 관심글 조회
     @Transactional(readOnly = true)
     public List<WishList> findLikePost(Long member_id,Long post_id) {
-        Optional<List<WishList>> memberFindWish = wishListRepository.findPost(member_id,post_id);
-        return memberFindWish.get();
+        return wishListRepository.findPost(member_id,post_id).orElseThrow(WishListNotFoundException::new);
     }
-
-
+    //관심글 등록
     public WishList createLikePost(Long member_id, Long post_id) {
-        Optional<Member> member = memberRepository.findById(member_id);
-        Optional<Post> post = postRepository.findById(post_id);
+        Member member = memberRepository.findById(member_id).orElseThrow(UserNotFoundException::new);
+        Post post = postRepository.findById(post_id).orElseThrow(PostNotFoundException::new);
         WishList wishList = WishList.builder()
-                .member(member.get())
-                .post(post.get())
+                .member(member)
+                .post(post)
                 .build();
         return wishListRepository.save(wishList);
     }
-
-
+    //관심글 해제
     public void deleteLikePost(Long member_id, Long post_id) {
-        Optional<WishList> findWish = Optional.ofNullable(wishListRepository.findWishListByMemberWithPost(member_id, post_id)
-                .orElseThrow(WishListCanNotDeleteException::new));
-
-        findWish.get().deleteWish();
-        wishListRepository.deleteById(findWish.get().getId());
+        WishList findWish = wishListRepository.findWishListByMemberWithPost(member_id, post_id)
+                .orElseThrow(WishListCanNotDeleteException::new);
+        findWish.deleteWish();
+        wishListRepository.deleteById(findWish.getId());
     }
 
-    public Member createMember(Long id, MemberRequestDto memberRequestDto) {
-        Optional<Member> createMember = memberRepository.findById(id);
-        addMemberReg(createMember.get(), memberRequestDto);
-        return createMember.get();
 
-    }
-
-    public MemberResponseDto findMember(Long id) {
-        return memberRepository.findOneMember(id);
+    @Transactional(readOnly = true)
+    public Optional<MemberResponseDto> findMember(Long id) {
+        return Optional.of(memberRepository.findOneMember(id)).orElseThrow(UserNotFoundException::new);
     }
 }
