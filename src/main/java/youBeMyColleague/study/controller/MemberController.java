@@ -8,6 +8,7 @@ import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
 import youBeMyColleague.study.dto.MemberResponseDto;
+import youBeMyColleague.study.model.CreateMemberSuccess;
 import youBeMyColleague.study.model.GetAllMember;
 import youBeMyColleague.study.model.GetMember;
 import youBeMyColleague.study.model.Success;
@@ -25,11 +26,18 @@ public class MemberController {
     private final MemberService memberService;
 
     // 추가회원가입
+<<<<<<< HEAD
     @PatchMapping("/signup/{memberId}")
     public String SignMember(@PathVariable Long memberId, @RequestBody MemberRequestDto memberRequestDto) {
         Optional<Member> findMember = memberRepository.findById(memberId);
+=======
+    @PatchMapping("/signup/{id}")
+    public ResponseEntity<CreateMemberSuccess> SignMember(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto) {
+        Optional<Member> findMember = memberRepository.findById(id);
+>>>>>>> c930963a9a48513a397939821e0752c63d85df12
         memberService.addMemberReg(findMember.get(), memberRequestDto);
-        return "추가회원 가입 완료";
+
+        return new ResponseEntity<>(new CreateMemberSuccess(true,"추가 회원 가입 완료",findMember),HttpStatus.OK);
     }
 
     //마이페이지
