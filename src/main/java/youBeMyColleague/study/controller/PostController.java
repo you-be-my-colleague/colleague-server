@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import youBeMyColleague.study.advice.exception.EmptyValueException;
+import youBeMyColleague.study.advice.exception.PostNotFoundException;
+import youBeMyColleague.study.advice.exception.UserNotFoundException;
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.dto.PostRequestDto;
 import youBeMyColleague.study.dto.PostResponseDto;
@@ -16,6 +19,7 @@ import youBeMyColleague.study.service.PostService;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,7 +32,7 @@ public class PostController {
     //1. 상세게시글 조회
     @GetMapping("/post/{post_id}")
     public ResponseEntity<GetPost> findOnePost(@PathVariable("post_id") Long postId) {
-        List<Post> post = postService.findPost(postId);
+        List<Post> post = postService.findPost(postId).orElseThrow(PostNotFoundException::new);
         return new ResponseEntity<>(new GetPost(true,"상세글 조회성공", post.stream()
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList())),HttpStatus.OK);
@@ -38,7 +42,13 @@ public class PostController {
     @PostMapping("/post/{creater_id}")
     public ResponseEntity<CreatePostSuccess> createPost(@RequestBody PostRequestDto postRequestDto,
                                              @PathVariable("creater_id") Long createrId) {
-        Long postId = postService.createPost(postRequestDto, createrId);
+        if (postRequestDto.getTitle().isEmpty() || postRequestDto.getContent().isEmpty()) {
+            throw new EmptyValueException();
+        }
+        //여긴 로그인 만료 이셉션 추가
+        Long postId = Optional.of(postService.createPost(postRequestDto, createrId))
+                .orElseThrow(UserNotFoundException::new);
+
         return new ResponseEntity<>(new CreatePostSuccess(true,"게시글 생성성공",postId)
                 ,HttpStatus.OK);
     }
@@ -47,7 +57,11 @@ public class PostController {
     @PatchMapping("/post/{post_id}")
     public ResponseEntity<Success> updatePost(@PathVariable("post_id") Long postId,
                                              @RequestBody PostRequestDto postRequestDto) {
-        postService.updatePost(postId, postRequestDto);
+        if (postRequestDto.getTitle().isEmpty() || postRequestDto.getContent().isEmpty()) {
+            throw new EmptyValueException();
+        }
+        Post post = postService.updatePost(postId, postRequestDto).orElseThrow(PostNotFoundException::new);
+        post.updatePost(postRequestDto);
         return new ResponseEntity<>(new Success(true,"게시글 수정완료"),HttpStatus.OK);
     }
 
@@ -61,7 +75,7 @@ public class PostController {
     @PutMapping("/post/{post_id}")
     public ResponseEntity<Success> updatePostStatus(@PathVariable("post_id") Long postId,
                                                    @RequestBody PostRequestDto postRequestDto) {
-        postService.updatePostStatus(postId,postRequestDto);
+        postService.updatePostStatus(postId,postRequestDto).orElseThrow(PostNotFoundException::new);
         return new ResponseEntity<>(new Success(true,"게시글 상태 수정완료"),HttpStatus.OK);
     }
 }
