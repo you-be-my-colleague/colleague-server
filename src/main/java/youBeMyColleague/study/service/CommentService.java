@@ -4,6 +4,9 @@ package youBeMyColleague.study.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import youBeMyColleague.study.advice.exception.CommentNotFoundException;
+import youBeMyColleague.study.advice.exception.PostNotFoundException;
+import youBeMyColleague.study.advice.exception.UserNotFoundException;
 import youBeMyColleague.study.domain.Comment;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
@@ -27,10 +30,8 @@ public class CommentService {
     //코멘트 만들기
     @Transactional
     public Comment createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
-        Optional<Post> findPost = Optional.ofNullable(postRepository.findById(postId).orElseThrow(
-                () -> new IllegalStateException("게시글이 존재하지 않습니다.")
-        ));
-        Optional<Member> findMember = memberRepository.findById(memberId);
+        Optional<Post> findPost = Optional.ofNullable(postRepository.findById(postId).orElseThrow(PostNotFoundException::new));
+        Optional<Member> findMember = Optional.ofNullable(memberRepository.findById(memberId).orElseThrow(UserNotFoundException::new));
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
                 .commentDate(LocalDateTime.now())
@@ -43,14 +44,15 @@ public class CommentService {
     //코멘트 삭제
     @Transactional
     public void deleteComment(Long commentId,Long postId) {
-        Optional<Comment> findComment = commentRepository.findById(commentId);
-        Optional<Post> findPost = postRepository.findById(postId);
+        Optional<Comment> findComment = Optional.ofNullable(commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new));
+        Optional<Post> findPost = Optional.ofNullable(postRepository.findById(postId).orElseThrow(PostNotFoundException::new));
         findPost.get().deleteComment(findComment.get());
     }
 
     //코멘트 수정
     @Transactional
     public Comment updateComment(Long commentId,CommentRequestDto commentRequestDto) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
         return commentRepository.findById(commentId).get().updateComment(commentRequestDto);
     }
 
