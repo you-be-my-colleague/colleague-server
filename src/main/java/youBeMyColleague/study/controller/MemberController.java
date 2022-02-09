@@ -4,6 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import youBeMyColleague.study.advice.exception.EmptyValueException;
+import youBeMyColleague.study.advice.exception.PostNotFoundException;
+import youBeMyColleague.study.advice.exception.UserNameDuplicateException;
+import youBeMyColleague.study.advice.exception.UserNotFoundException;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
@@ -14,6 +18,8 @@ import youBeMyColleague.study.model.Success;
 import youBeMyColleague.study.service.MemberService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,20 +30,24 @@ public class MemberController {
 
     // 추가회원가입
 
-    @PatchMapping("/signup/{id}")
-    public ResponseEntity<Success> SignMember(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto) {
-        memberService.createMember(id, memberRequestDto);
+    @PatchMapping("/signup/{memberId}")
+    public ResponseEntity<Success> signMember(@PathVariable Long memberId, @RequestBody MemberRequestDto memberRequestDto) {
+        if (memberRequestDto.getName().isEmpty()) {
+            throw new EmptyValueException("닉네임을 입력 해주세요.");
+        }
+        if (Objects.equals(memberService.findMember(memberId).getName(), memberRequestDto.getName())) {
+            throw new UserNameDuplicateException("이미 존재하는 닉네임 입니다.");
+        }
+        memberService.createMember(memberId, memberRequestDto);
         return new ResponseEntity<>(new Success(true,"추가 회원 가입 완료"),HttpStatus.OK);
     }
 
     //마이페이지
     @GetMapping("/my-page/{id}")
-    public ResponseEntity<GetMember> selectMember(@PathVariable Long id){
-        MemberResponseDto findMember = memberService.fiMember(id);
+    public ResponseEntity<GetMember> settingMember(@PathVariable Long id){
+        MemberResponseDto findMember = Optional.of(memberService.findMember(id)).orElseThrow(UserNotFoundException::new);
         return ResponseEntity.ok().body(new GetMember(true,"마이페이지 조회 완료",findMember));
-
     }
-
     //회원탈퇴
     @DeleteMapping("/my-page/{memberId}")
     public ResponseEntity<Success> deleteMember(@PathVariable Long memberId){
@@ -49,14 +59,20 @@ public class MemberController {
     @PatchMapping("/my-page/{memberId}")
     public ResponseEntity<Success> updateMember(@PathVariable Long memberId,
                                @RequestBody MemberChangeRequestDto memberChangeRequestDto){
+        if (memberChangeRequestDto.getName().isEmpty()) {
+            throw new EmptyValueException("닉네임을 입력 해주세요.");
+        }
+        if (Objects.equals(memberService.findMember(memberId).getName(), memberChangeRequestDto.getName())) {
+            throw new UserNameDuplicateException("이미 존재하는 닉네임 입니다.");
+        }
         memberService.updateMember(memberId, memberChangeRequestDto);
         return new ResponseEntity<>(new Success(true,"회원정보 수정 완료"),HttpStatus.OK);
     }
 
-    //마이페이지 내작성글
+    //마이페이지 내 작성글
     @GetMapping("/my-page/post/my-posts/{memberId}")
-    public ResponseEntity<GetAllMember> selectPost(@PathVariable Long memberId){
-        List<Member> members = memberService.findMemberPost(memberId);
+    public ResponseEntity<GetAllMember> myCreatePost(@PathVariable Long memberId){
+        List<Member> members = memberService.findMemberPost(memberId).orElseThrow(PostNotFoundException::new);
         return new ResponseEntity<>(new GetAllMember(true,"내 작성글 조회완료",members.stream()
                 .map(MemberResponseDto::new)
                 .collect(Collectors.toList())),HttpStatus.OK);
