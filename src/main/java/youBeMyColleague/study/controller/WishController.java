@@ -5,8 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import youBeMyColleague.study.domain.WishList;
 import youBeMyColleague.study.dto.WishResponseDto;
-import youBeMyColleague.study.dto.Wrap;
+import youBeMyColleague.study.model.GetAllWishList;
 import youBeMyColleague.study.service.MemberService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -16,9 +19,9 @@ public class WishController {
 
     //마이페이지 내 관심글
     @GetMapping("/post-like/{member_id}/{post_id}")
-    public ResponseEntity<Wrap> selectLikePost(@PathVariable Long member_id,@PathVariable Long post_id){
+    public ResponseEntity<GetAllWishList> selectLikePost(@PathVariable Long member_id, @PathVariable Long post_id){
         List<WishList> memberLikePost = memberService.findLikePost(member_id, post_id);
-        return ResponseEntity.ok().body(new Wrap(memberLikePost.stream()
+        return ResponseEntity.ok().body(new GetAllWishList(true,"내 관심글 조회성공",memberLikePost.stream()
                 .map(WishResponseDto::new)
                 .collect(Collectors.toList())));
     }
