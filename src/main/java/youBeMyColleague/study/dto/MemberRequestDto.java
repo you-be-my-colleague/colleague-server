@@ -20,5 +20,5 @@ public class MemberRequestDto {
 
     private TechStack stack;
 
-    private Role role;
+//    private Role role;
 }

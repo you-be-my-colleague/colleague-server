@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import youBeMyColleague.study.advice.exception.WishListCreateExcetion;
+import youBeMyColleague.study.advice.exception.WishListCreateException;
 import youBeMyColleague.study.advice.exception.WishListNotFoundException;
 import youBeMyColleague.study.domain.WishList;
 import youBeMyColleague.study.dto.WishResponseDto;
@@ -35,7 +35,7 @@ public class WishController {
     //관심글 등록
     @PostMapping("/post-like/{member_id}/{post_id}")
     public ResponseEntity<Success> createLikePost (@PathVariable Long member_id, @PathVariable Long post_id){
-        Optional.of(memberService.createLikePost(member_id, post_id)).orElseThrow(WishListCreateExcetion::new);
+        Optional.of(memberService.createLikePost(member_id, post_id)).orElseThrow(WishListCreateException::new);
         return new ResponseEntity<>(new Success(true,"내 관심글 등록 성공"),HttpStatus.OK);
     }
 

@@ -3,6 +3,7 @@ package youBeMyColleague.study.domain;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.lang.Nullable;
+import youBeMyColleague.study.dto.MemberRequestDto;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -49,10 +50,10 @@ public class Member {
         comment.setMember(this);
     }
 
-    public void updateMember(String name,String img, TechStack stack){
-        this.name = name;
-        this.img = img;
-        this.stack = stack;
+    public void updateMember(MemberRequestDto memberRequestDto){
+        this.name = memberRequestDto.getName();
+        this.img = memberRequestDto.getImg();
+        this.stack = memberRequestDto.getStack();
     }
     public Member update(String name, String picture) {
         this.name = name;

@@ -16,7 +16,6 @@ import youBeMyColleague.study.model.CreatePostSuccess;
 import youBeMyColleague.study.model.GetPost;
 import youBeMyColleague.study.model.Success;
 import youBeMyColleague.study.service.PostService;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,10 +44,10 @@ public class PostController {
         if (postRequestDto.getTitle().isEmpty() || postRequestDto.getContent().isEmpty()) {
             throw new EmptyValueException();
         }
+
         //여긴 로그인 만료 이셉션 추가
         Long postId = Optional.of(postService.createPost(postRequestDto, createrId))
                 .orElseThrow(UserNotFoundException::new);
-
         return new ResponseEntity<>(new CreatePostSuccess(true,"게시글 생성성공",postId)
                 ,HttpStatus.OK);
     }
@@ -60,7 +59,7 @@ public class PostController {
         if (postRequestDto.getTitle().isEmpty() || postRequestDto.getContent().isEmpty()) {
             throw new EmptyValueException();
         }
-        Post post = postService.updatePost(postId, postRequestDto).orElseThrow(PostNotFoundException::new);
+        Post post = postService.updatePost(postId).orElseThrow(PostNotFoundException::new);
         post.updatePost(postRequestDto);
         return new ResponseEntity<>(new Success(true,"게시글 수정완료"),HttpStatus.OK);
     }
@@ -69,9 +68,9 @@ public class PostController {
     @DeleteMapping("/post/{post_id}")
     public ResponseEntity<Success> deletePost(@PathVariable("post_id") Long postId) {
         postService.deletePost(postId);
-        return new ResponseEntity(new Success(true,"게시글 삭제완료"),HttpStatus.OK);
+        return new ResponseEntity<>(new Success(true,"게시글 삭제완료"),HttpStatus.OK);
     }
-//5. 게시글 마감
+    //5. 게시글 마감
     @PutMapping("/post/{post_id}")
     public ResponseEntity<Success> updatePostStatus(@PathVariable("post_id") Long postId,
                                                    @RequestBody PostRequestDto postRequestDto) {

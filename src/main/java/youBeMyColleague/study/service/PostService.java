@@ -4,6 +4,8 @@ package youBeMyColleague.study.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import youBeMyColleague.study.advice.exception.PostNotFoundException;
+import youBeMyColleague.study.advice.exception.UserNotFoundException;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.RecruitmentStatus;
@@ -25,7 +27,7 @@ public class PostService {
 
     @Transactional
     public Long createPost(PostRequestDto postRequestDto, Long createrId) {
-        Optional<Member> member = memberRepository.findById(createrId);
+        Member member = memberRepository.findById(createrId).orElseThrow(UserNotFoundException::new);
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
@@ -33,35 +35,34 @@ public class PostService {
                 .gitAddress(postRequestDto.getGitAddress())
                 .postDate(LocalDateTime.now())
                 .postStatus(RecruitmentStatus.CONTINUE)
-                .member(member.get())
+                .member(member)
                 .build();
         return postRepository.save(post).getId();
     }
     //게시글 상세
     public Optional<List<Post>> findPost(Long postId) {
-        Optional<List<Post>> postWithAllComment = postRepository.findPostWithAllComment(postId);
-        postWithAllComment.get().get(0).addViewsCount(); //조회수
-        return postWithAllComment;
+        List<Post> postWithAllComment = postRepository.findPostWithAllComment(postId).orElseThrow(PostNotFoundException::new);
+        postWithAllComment.get(0).addViewsCount(); //조회수
+        return Optional.of(postWithAllComment);
     }
     //전체 게시글 불러오기
     public Optional<List<Post>> findAllPost() {
-        List<Post> all = postRepository.findAll();
+        List<Post> all = Optional.of(postRepository.findAll()).orElseThrow(PostNotFoundException::new);
         return Optional.of(all);
     }
-
     //게시글 수정
     @Transactional
-    public Optional<Post> updatePost(Long postId, PostRequestDto postRequestDto) {
-        Optional<Post> post = postRepository.findById(postId);
-        return post;
+    public Optional<Post> updatePost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        return Optional.of(post);
     }
 
     //게시글 상태 수정
     @Transactional
     public Optional<Post> updatePostStatus(Long postId,PostRequestDto postRequestDto) {
-        Optional<Post> post = postRepository.findById(postId);
-        post.get().updatePostStatus(postRequestDto);
-        return post;
+        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);;
+        post.updatePostStatus(postRequestDto);
+        return Optional.of(post);
     }
 
     //게시글 삭제
