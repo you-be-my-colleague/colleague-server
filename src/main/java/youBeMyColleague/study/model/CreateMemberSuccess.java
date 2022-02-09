@@ -17,5 +17,5 @@ public class CreateMemberSuccess {
 
     private boolean success;
     private String msg;
-    private Optional<Member> member;
+    private Member member;
 }

@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
-    List<Member> findByName (String name);
+
     Optional<Member> findByEmail(String email);
-    void deleteByEmail(String email);
 
     @Query("select distinct m from Member m left join fetch m.posts where m.id=:memberId")
     Optional<List<Member>> findMemberPost(@Param("memberId") Long memberId);
@@ -20,6 +19,5 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
     @Query("select m from Member m where m.id = :memberId")
     Optional<MemberResponseDto> findOneMember(@Param("memberId") Long memberId);
 
-    @Query("select distinct m from Member m left join fetch m.wishLists where m.id =:memberId")
-    Optional<List<Member>> findMemberLikePost(@Param("memberId") Long memberId);
+
 }
