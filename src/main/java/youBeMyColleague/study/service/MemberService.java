@@ -35,7 +35,7 @@ public class MemberService {
         Member member = Member.builder()
                 .name(memberRequestDto.getName())
                 .img(memberRequestDto.getImg())
-                .role("ROLE_USER")
+                .role(Role.USER)
                 .stack(memberRequestDto.getStack())
                 .build();
         validateDuplicateMember(member);
@@ -50,9 +50,8 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByName(member.getName());
-        System.out.println("findMembers" + findMembers);
-        if (!findMembers.isEmpty()) {
+        Optional<Member> findMembers = memberRepository.findByEmail(member.getEmail());
+        if (findMembers.isPresent()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
@@ -72,28 +71,36 @@ public class MemberService {
     @Transactional(readOnly = true)
     public List<Member> findMemberPost(Long id) {
         Optional<List<Member>> memberPost = memberRepository.findMemberPost(id);
-        log.info("test"+memberPost.get());
         return memberPost.get();
     }
 
-    public List<Member> findLikePost(Long id) {
-        Optional<List<Member>> memberLikePost = memberRepository.findMemberLikePost(id);
-        return memberLikePost.get();
+    public List<WishList> findLikePost(Long id) {
+//        Optional<List<Member>> memberLikePost = memberRepository.findMemberLikePost(id);
+        Optional<List<WishList>> memberFindWish = wishListRepository.findAllWishListByMember(id);
+        return memberFindWish.get();
     }
 
     @Transactional
     public WishList createLikePost(Long member_id, Long post_id) {
-        Optional<Member> memberId = memberRepository.findById(member_id);
-        Optional<Post> postId = postRepository.findById(post_id);
+        Optional<Member> member = memberRepository.findById(member_id);
+        Optional<Post> post = postRepository.findById(post_id);
+        if (!post.isPresent() || !member.isPresent()){
+            throw new IllegalStateException("해당 포스트가 존재하지 않습니다.");
+        }
         WishList wishList = WishList.builder()
-                .member(memberId.get())
-                .post(postId.get())
+                .member(member.get())
+                .post(post.get())
                 .build();
         return wishListRepository.save(wishList);
     }
 
     @Transactional
-    public void deleteLikePost(Long wishList_id) {
-        wishListRepository.deleteById(wishList_id);
+    public void deleteLikePost(Long member_id, Long post_id) {
+        Optional<WishList> findWish = wishListRepository.findWishListByMemberWithPost(member_id,post_id);
+        if (!findWish.isPresent()){
+            throw new IllegalStateException("관심글을 찾을 수 없습니다");
+        }
+        findWish.get().deleteWish();
+        wishListRepository.deleteById(findWish.get().getId());
     }
 }

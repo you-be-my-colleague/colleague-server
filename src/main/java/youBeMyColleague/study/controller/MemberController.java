@@ -25,10 +25,11 @@ public class MemberController {
 
     // 추가회원가입
     @PatchMapping("/signup/{id}")
-    public String SignMember(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto){
+    public String SignMember(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto) {
         Optional<Member> findMember = memberRepository.findById(id);
         memberService.addMemberReg(findMember.get(), memberRequestDto);
-        return "추가회원 가입 완료";}
+        return "추가회원 가입 완료";
+    }
 
     //마이페이지
     @GetMapping("/my-page/{id}")
@@ -60,24 +61,6 @@ public class MemberController {
                 .map(MemberResponseDto::new)
                 .collect(Collectors.toList())));
     }
-<<<<<<< HEAD
 
-    //마이페이지 내 관심글
-    @GetMapping("/my-page/my-likes/{id}")
-    public ResponseEntity<Wrap> selectLikePost(@PathVariable Long id){
-        List<Member> memberLikePost = memberService.findLikePost(id);
-        return ResponseEntity.ok().body(new Wrap(memberLikePost.stream()
-                .map(MemberResponseDto::new)
-                .collect(Collectors.toList())));
-    }
 
-    //마이페이지 내 관심글 등록
-    @PostMapping("/post-like/{member_id}/{post_id}")
-    public String createLikePost (@PathVariable Long member_id,@PathVariable Long post_id){
-        memberService.createLikePost(member_id,post_id);
-        return "";
-    }
-
-=======
->>>>>>> 12d0d756e0b124f7c60387d5d159971ae1510496
 }

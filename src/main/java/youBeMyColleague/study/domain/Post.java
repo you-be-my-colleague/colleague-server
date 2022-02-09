@@ -29,7 +29,6 @@ public class Post {
     private String content;
 
     @Embedded
-    @Column(nullable = false)
     private TechStack stack;
 
     @Column(columnDefinition = "varchar(255) default ''")
@@ -47,8 +46,7 @@ public class Post {
     @Column(columnDefinition = "integer default 0")
     private int commentCount;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "wishList_id")
+    @OneToOne
     private WishList wishList;
 
     private LocalDateTime postDate;
@@ -87,6 +85,16 @@ public class Post {
         this.gitAddress = postRequestDto.getGitAddress();
         this.postDate = LocalDateTime.now();
     }
+    /**
+     * 게시글 좋아요 수 카운트
+     */
+    public void upLikeCount() {
+        this.likes += 1;
+    }
+    public void downLikeCount() {
+        this.likes -= 1;
+    }
+
     /**
      * 게시글 상태 수정
      */
