@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import youBeMyColleague.study.domain.Member;
+import youBeMyColleague.study.domain.WishList;
 import youBeMyColleague.study.dto.MemberResponseDto;
+import youBeMyColleague.study.dto.WishResponseDto;
 import youBeMyColleague.study.dto.Wrap;
 import youBeMyColleague.study.service.MemberService;
 
@@ -18,11 +20,11 @@ public class WishController {
     private final MemberService memberService;
 
     //마이페이지 내 관심글
-    @GetMapping("/my-page/my-likes/{id}")
-    public ResponseEntity<Wrap> selectLikePost(@PathVariable Long id){
-        List<Member> memberLikePost = memberService.findLikePost(id);
+    @GetMapping("/post-like/{member_id}/{post_id}")
+    public ResponseEntity<Wrap> selectLikePost(@PathVariable Long member_id,@PathVariable Long post_id){
+        List<WishList> memberLikePost = memberService.findLikePost(member_id, post_id);
         return ResponseEntity.ok().body(new Wrap(memberLikePost.stream()
-                .map(MemberResponseDto::new)
+                .map(WishResponseDto::new)
                 .collect(Collectors.toList())));
     }
 
@@ -34,9 +36,9 @@ public class WishController {
     }
 
     // 마이페이지 내 관심글 삭제
-    @DeleteMapping("/my-page/my-likes/{wishList_id}")
-    public ResponseEntity<String>  deleteLikePost(@PathVariable Long wishList_id){
-        memberService.deleteLikePost(wishList_id);
+    @DeleteMapping("/post-like/{member_id}/{post_id}")
+    public ResponseEntity<String>  deleteLikePost(@PathVariable Long member_id,@PathVariable Long post_id){
+        memberService.deleteLikePost(member_id,post_id);
         return ResponseEntity.ok().body("{'result':'success'}");
     }
 }
