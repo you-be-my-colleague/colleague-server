@@ -67,9 +67,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<Member> findMemberPost(Long id) {
+    public Optional<List<Member>> findMemberPost(Long id) {
         Optional<List<Member>> memberPost = memberRepository.findMemberPost(id);
-        return memberPost.get();
+        return memberPost;
     }
     @Transactional(readOnly = true)
     public List<WishList> findLikePost(Long member_id,Long post_id) {
@@ -104,8 +104,7 @@ public class MemberService {
 
     }
 
-    public MemberResponseDto fiMember(Long id) {
-        MemberResponseDto findMember = memberRepository.findOneMember(id);
-        return findMember;
+    public MemberResponseDto findMember(Long id) {
+        return memberRepository.findOneMember(id);
     }
 }
