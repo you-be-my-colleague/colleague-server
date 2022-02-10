@@ -36,7 +36,7 @@ public class WishController {
     //관심글 등록
     @PostMapping("/post-like/{member_id}/{post_id}")
     public ResponseEntity<Success> createLikePost (@PathVariable Long member_id, @PathVariable Long post_id){
-        Optional.of(wishService.createLikePost(member_id, post_id)).orElseThrow(WishListCreateException::new);
+        wishService.createLikePost(member_id, post_id);
         return new ResponseEntity<>(new Success(true,"내 관심글 등록 성공"),HttpStatus.OK);
     }
 
