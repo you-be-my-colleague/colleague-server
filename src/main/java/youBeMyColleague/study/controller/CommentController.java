@@ -40,7 +40,6 @@ public class CommentController {
         if(commentRequestDto.getContent().isEmpty()){
             throw new EmptyValueException();
         }
-        
         commentService.updateComment(commentId,commentRequestDto);
         return new ResponseEntity<>(new Success(true,"댓글 수정 완료"),HttpStatus.OK);
     }
