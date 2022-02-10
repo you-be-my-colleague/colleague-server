@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -30,7 +30,6 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     //코멘트 만들기
-    @Transactional
     public Long createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
         Post findPost = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         Member findMember = memberRepository.findById(memberId).orElseThrow(UserNotFoundException::new);
@@ -44,7 +43,6 @@ public class CommentService {
         return comment.getId();
     }
     //코멘트 삭제
-    @Transactional
     public void deleteComment(Long commentId,Long postId) {
         Optional<Comment> findComment = Optional.ofNullable(commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new));
         Optional<Post> findPost = Optional.ofNullable(postRepository.findById(postId).orElseThrow(PostNotFoundException::new));
@@ -52,7 +50,7 @@ public class CommentService {
     }
 
     //코멘트 수정
-    @Transactional
+
     public Comment updateComment(Long commentId,CommentRequestDto commentRequestDto) {
         commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
         return commentRepository.findById(commentId).get().updateComment(commentRequestDto);

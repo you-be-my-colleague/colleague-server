@@ -10,7 +10,6 @@ import youBeMyColleague.study.advice.exception.PostNotFoundException;
 import youBeMyColleague.study.advice.exception.UserNameDuplicateException;
 import youBeMyColleague.study.advice.exception.UserNotFoundException;
 import youBeMyColleague.study.domain.Member;
-import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
 import youBeMyColleague.study.dto.MemberResponseDto;
 import youBeMyColleague.study.model.GetAllMember;

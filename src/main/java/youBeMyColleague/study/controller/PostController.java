@@ -74,8 +74,8 @@ public class PostController {
     @PutMapping("/post/{post_id}")
     public ResponseEntity<Success> updatePostStatus(@PathVariable("post_id") Long postId,
                                                    @RequestBody PostRequestDto postRequestDto) {
-        postService.updatePostStatus(postId,postRequestDto).orElseThrow(PostNotFoundException::new);
-        return new ResponseEntity<>(new Success(true,"게시글 상태 수정완료"),HttpStatus.OK);
+        postService.updatePostStatus(postId, postRequestDto).orElseThrow(PostNotFoundException::new);
+        return new ResponseEntity<>(new Success(true, "게시글 상태 수정완료"), HttpStatus.OK);
     }
 }
 
