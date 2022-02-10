@@ -31,20 +31,20 @@ public class CommentController {
 
     //2. 댓글 수정
     @PatchMapping("/comment/{comment_id}")
-    public ResponseEntity<Success> updateComment(@PathVariable("comment_id") Long commnetId,
+    public ResponseEntity<Success> updateComment(@PathVariable("comment_id") Long commentId,
                                                 @RequestBody CommentRequestDto commentRequestDto) {
         if(commentRequestDto.getContent().isEmpty()){
             throw new EmptyValueException();
         }
         
-        commentService.updateComment(commnetId,commentRequestDto);
+        commentService.updateComment(commentId,commentRequestDto);
         return new ResponseEntity<>(new Success(true,"댓글 수정 완료"),HttpStatus.OK);
     }
     //3. 댓글 삭제
     @DeleteMapping("/comment/{comment_id}/{post_id}")
-    public ResponseEntity<Success> deleteComment(@PathVariable("comment_id") Long commnetId,
+    public ResponseEntity<Success> deleteComment(@PathVariable("comment_id") Long commentId,
                                                 @PathVariable("post_id") Long postId) {
-        commentService.deleteComment(commnetId,postId);
+        commentService.deleteComment(commentId,postId);
         return new ResponseEntity<>(new Success(true,"댓글 삭제 완료"),HttpStatus.OK);
     }
 
