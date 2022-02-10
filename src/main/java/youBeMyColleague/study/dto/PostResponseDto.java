@@ -1,8 +1,6 @@
 package youBeMyColleague.study.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import youBeMyColleague.study.domain.*;
 
 import java.time.LocalDateTime;
@@ -38,7 +36,7 @@ public class PostResponseDto {
         this.likes = post.getLikes();
         this.postDate = post.getPostDate();
         this.comments = post.getComments().stream()
-                .map(c -> new CommentResponseDto(c.getMember().getId(),c.getMember().getName(),c.getContent(),c.getCommentDate()))
+                .map(c -> new CommentResponseDto(c.getMember().getId(),c.getMember().getName(),c.getId(),c.getContent(),c.getCommentDate()))
                 .collect(Collectors.toList());
         this.commentCount = post.getCommentCount();
     }
