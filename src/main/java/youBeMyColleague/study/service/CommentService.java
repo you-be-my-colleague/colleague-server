@@ -4,6 +4,8 @@ package youBeMyColleague.study.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import youBeMyColleague.study.advice.exception.PostNotFoundException;
+import youBeMyColleague.study.advice.exception.UserNotFoundException;
 import youBeMyColleague.study.domain.Comment;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
@@ -26,19 +28,17 @@ public class CommentService {
 
     //코멘트 만들기
     @Transactional
-    public Comment createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
-        Optional<Post> findPost = Optional.ofNullable(postRepository.findById(postId).orElseThrow(
-                () -> new IllegalStateException("게시글이 존재하지 않습니다.")
-        ));
-        Optional<Member> findMember = memberRepository.findById(memberId);
+    public Long createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
+        Post findPost = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        Member findMember = memberRepository.findById(memberId).orElseThrow(UserNotFoundException::new);
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
                 .commentDate(LocalDateTime.now())
                 .build();
         commentRepository.save(comment);
-        findPost.get().addComment(comment);
-        findMember.get().addComment(comment);
-        return comment;
+        findPost.addComment(comment);
+        findMember.addComment(comment);
+        return comment.getId();
     }
     //코멘트 삭제
     @Transactional
