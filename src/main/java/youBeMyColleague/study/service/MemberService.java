@@ -2,6 +2,9 @@ package youBeMyColleague.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import youBeMyColleague.study.advice.exception.*;
@@ -17,6 +20,9 @@ import youBeMyColleague.study.dto.MemberResponseDto;
 import youBeMyColleague.study.repository.MemberRepository;
 import youBeMyColleague.study.repository.PostRepository;
 import youBeMyColleague.study.repository.WishListRepository;
+import youBeMyColleague.study.security.UserDetailsImpl;
+import youBeMyColleague.study.security.kakao.KakaoOAuth2;
+import youBeMyColleague.study.security.kakao.KakaoUserInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +34,8 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
+    private final KakaoOAuth2 kakaoOAuth2;
 
     // 회원가입
     public Member join(MemberRequestDto memberRequestDto) {
@@ -66,6 +74,7 @@ public class MemberService {
         findMember.updateMember(memberRequestDto);
         return findMember;
     }
+
     //사용자 작성글 조회
     @Transactional(readOnly = true)
     public Optional<List<Member>> findMemberPost(Long id) {
@@ -76,5 +85,33 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Optional<MemberResponseDto> findMember(Long member_id) {
         return Optional.of(memberRepository.findOneMember(member_id)).orElseThrow(UserNotFoundException::new);
+    }
+
+    //카카오 로그인
+    public Optional<Member> kakaoLogin(String authorizedCode) {
+        KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(authorizedCode);
+        String email = userInfo.getEmail();
+
+        Member kakaoMember = memberRepository.findByEmail(email).orElse(null);
+
+        // 카카오 정보로 회원가입
+        if (kakaoMember == null) {
+            Member SameEmail = memberRepository.findByEmail(email).orElse(null);
+            if (SameEmail != null) {
+                kakaoMember = SameEmail;
+                memberRepository.save(kakaoMember);
+            } else {
+
+                kakaoMember = Member.builder()
+                        .name(userInfo.getName())
+                        .img(userInfo.getImg())
+                        .email(userInfo.getEmail())
+                        .role(Role.USER)
+                        .build();
+
+                memberRepository.save(kakaoMember);
+            }
+        }
+        return Optional.of(memberRepository.findByEmail(email)).orElseThrow(UserNotFoundException::new);
     }
 }
