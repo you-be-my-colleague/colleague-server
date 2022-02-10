@@ -52,8 +52,9 @@ public class PostService {
     }
     //게시글 수정
     @Transactional
-    public Optional<Post> updatePost(Long postId) {
+    public Optional<Post> updatePost(Long postId,PostRequestDto postRequestDto) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        post.updatePost(postRequestDto);
         return Optional.of(post);
     }
 
