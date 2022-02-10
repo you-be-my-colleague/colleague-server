@@ -9,7 +9,7 @@ import youBeMyColleague.study.dto.MemberResponseDto;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member,Long> {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
 
@@ -19,5 +19,6 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
     @Query("select m from Member m where m.id = :memberId")
     Optional<MemberResponseDto> findOneMember(@Param("memberId") Long memberId);
 
-
+    @Query("select m from Member m where m.name = :memberName")
+    Member findByName(@Param("memberName") String username);
 }
