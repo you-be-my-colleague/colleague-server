@@ -10,7 +10,6 @@ import youBeMyColleague.study.advice.exception.PostNotFoundException;
 import youBeMyColleague.study.advice.exception.UserNameDuplicateException;
 import youBeMyColleague.study.advice.exception.UserNotFoundException;
 import youBeMyColleague.study.domain.Member;
-import youBeMyColleague.study.dto.MemberChangeRequestDto;
 import youBeMyColleague.study.dto.MemberRequestDto;
 import youBeMyColleague.study.dto.MemberResponseDto;
 import youBeMyColleague.study.model.GetAllMember;
@@ -20,6 +19,7 @@ import youBeMyColleague.study.service.MemberService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -78,5 +78,11 @@ public class MemberController {
                 .map(MemberResponseDto::new)
                 .collect(Collectors.toList())),HttpStatus.OK);
     }
-}
 
+    //카카오 로그인 callback
+    @GetMapping("/user/kakao/callback")
+    public ResponseEntity<GetMember> kakaoLogin(String code){
+        Optional<Member> memberResponseDto = memberService.kakaoLogin(code);
+        return new ResponseEntity<>(new GetMember(true,"카카오 회원가입 완료",memberResponseDto),HttpStatus.OK);
+    }
+}

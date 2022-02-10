@@ -70,7 +70,7 @@ public class Member {
         this.name = name;
         this.email = email;
         this.img = img;
-        //this.role = role;
+        this.role = role;
         this.createDate = createDate;
         this.stack = stack;
     }
