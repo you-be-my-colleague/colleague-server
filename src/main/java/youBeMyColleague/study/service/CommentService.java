@@ -4,7 +4,9 @@ package youBeMyColleague.study.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import youBeMyColleague.study.advice.exception.CommentNotFoundException;
+
 import youBeMyColleague.study.advice.exception.PostNotFoundException;
 import youBeMyColleague.study.advice.exception.UserNotFoundException;
 import youBeMyColleague.study.domain.Comment;
@@ -37,9 +39,9 @@ public class CommentService {
                 .commentDate(LocalDateTime.now())
                 .build();
         commentRepository.save(comment);
-        findPost.get().addComment(comment);
-        findMember.get().addComment(comment);
-        return comment;
+        findPost.addComment(comment);
+        findMember.addComment(comment);
+        return comment.getId();
     }
     //코멘트 삭제
     @Transactional
