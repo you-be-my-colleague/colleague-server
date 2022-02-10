@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import youBeMyColleague.study.advice.exception.PostNotFoundException;
-import youBeMyColleague.study.advice.exception.UserNotFoundException;
-import youBeMyColleague.study.advice.exception.WishListCanNotDeleteException;
-import youBeMyColleague.study.advice.exception.WishListNotFoundException;
+import youBeMyColleague.study.advice.exception.*;
 import youBeMyColleague.study.domain.Member;
 import youBeMyColleague.study.domain.Post;
 import youBeMyColleague.study.domain.WishList;
@@ -16,6 +13,7 @@ import youBeMyColleague.study.repository.PostRepository;
 import youBeMyColleague.study.repository.WishListRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -44,13 +42,19 @@ public class WishService {
     }
     
     //관심글 등록
-    public WishList createLikePost(Long member_id, Long post_id) {
+    public Optional<WishList> createLikePost(Long member_id, Long post_id) {
         Member member = memberRepository.findById(member_id).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findById(post_id).orElseThrow(PostNotFoundException::new);
-        WishList wishList = WishList.builder()
-                .member(member)
-                .post(post)
-                .build();
-        return wishListRepository.save(wishList);
+        Optional<WishList> wishListByMemberWithPost = wishListRepository.findWishListByMemberWithPost(member_id, post_id);
+        if (!wishListByMemberWithPost.isPresent()) {
+            WishList wishList = WishList.builder()
+                    .member(member)
+                    .post(post)
+                    .build();
+            wishListRepository.save(wishList);
+        }else {
+            throw new WishListCreateException();
+        }
+        return wishListByMemberWithPost;
     }
 }
