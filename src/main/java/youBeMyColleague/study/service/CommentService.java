@@ -31,9 +31,9 @@ public class CommentService {
 
     //코멘트 만들기
     @Transactional
-    public Comment createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
-        Optional<Post> findPost = Optional.ofNullable(postRepository.findById(postId).orElseThrow(PostNotFoundException::new));
-        Optional<Member> findMember = Optional.ofNullable(memberRepository.findById(memberId).orElseThrow(UserNotFoundException::new));
+    public Long createComment(CommentRequestDto commentRequestDto, Long postId, Long memberId) {
+        Post findPost = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        Member findMember = memberRepository.findById(memberId).orElseThrow(UserNotFoundException::new);
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
                 .commentDate(LocalDateTime.now())
@@ -54,7 +54,7 @@ public class CommentService {
     //코멘트 수정
     @Transactional
     public Comment updateComment(Long commentId,CommentRequestDto commentRequestDto) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+        commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
         return commentRepository.findById(commentId).get().updateComment(commentRequestDto);
     }
 

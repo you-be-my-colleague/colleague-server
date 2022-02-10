@@ -22,15 +22,14 @@ public class CommentController {
     //1. 댓글 등록
     @PostMapping("/comment/{creater_id}/{post_id}")
     public ResponseEntity<CreateCommentSuccess> createComment(@PathVariable("creater_id") Long createrId,
-                                                 @PathVariable("post_id") Long post_id,
-                                                 @RequestBody CommentRequestDto commentRequestDto) {
+                                                 @PathVariable("post_id") Long post_id, @RequestBody CommentRequestDto commentRequestDto) {
 
         if(commentRequestDto.getContent().isEmpty()){
             throw new EmptyValueException();
         }
 
-        commentService.createComment(commentRequestDto, post_id, createrId);
-        return new ResponseEntity<>(new Success(true,"댓글 등록 완료"), HttpStatus.OK);
+        Long comment_id = commentService.createComment(commentRequestDto, post_id, createrId);
+        return new ResponseEntity<>(new CreateCommentSuccess(true,"댓글 등록 완료",comment_id), HttpStatus.OK);
 
     }
 
