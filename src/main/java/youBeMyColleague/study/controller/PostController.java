@@ -59,8 +59,8 @@ public class PostController {
         if (postRequestDto.getTitle().isEmpty() || postRequestDto.getContent().isEmpty()) {
             throw new EmptyValueException();
         }
-        Post post = postService.updatePost(postId).orElseThrow(PostNotFoundException::new);
-        post.updatePost(postRequestDto);
+        postService.updatePost(postId,postRequestDto).orElseThrow(PostNotFoundException::new);
+
         return new ResponseEntity<>(new Success(true,"게시글 수정완료"),HttpStatus.OK);
     }
 

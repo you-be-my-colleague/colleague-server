@@ -13,10 +13,10 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post,Long> {
 
     @Query("select distinct p from Post p left join fetch p.comments join fetch p.member where p.id =:postId")
-    public Optional<List<Post>> findPostWithAllComment(@Param("postId") Long postId);
+    Optional<List<Post>> findPostWithAllComment(@Param("postId") Long postId);
 
     @Query("select distinct p from Post p left join fetch p.comments join fetch p.member")
-    public List<Post> findAll();
+    List<Post> findAll();
 
 }
 
