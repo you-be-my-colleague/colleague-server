@@ -2,6 +2,7 @@ package youBeMyColleague.study.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import youBeMyColleague.study.service.CommentService;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class CommentController {
 
     private final CommentService commentService;
@@ -25,12 +27,12 @@ public class CommentController {
                                                  @PathVariable("post_id") Long post_id, @RequestBody CommentRequestDto commentRequestDto) {
 
         if(commentRequestDto.getContent().isEmpty()){
+
             throw new EmptyValueException();
         }
 
         Long comment_id = commentService.createComment(commentRequestDto, post_id, createrId);
         return new ResponseEntity<>(new CreateCommentSuccess(true,"댓글 등록 완료",comment_id), HttpStatus.OK);
-
     }
 
     //2. 댓글 수정

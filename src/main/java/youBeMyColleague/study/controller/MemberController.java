@@ -80,7 +80,7 @@ public class MemberController {
     }
 
     //카카오 로그인 callback
-    @GetMapping("/user/kakao/callback")
+    @GetMapping(                                                                                      "/user/kakao/callback")
     public ResponseEntity<GetMember> kakaoLogin(String code){
         Optional<Member> memberResponseDto = memberService.kakaoLogin(code);
         return new ResponseEntity<>(new GetMember(true,"카카오 회원가입 완료",memberResponseDto),HttpStatus.OK);

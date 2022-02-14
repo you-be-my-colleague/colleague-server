@@ -45,6 +45,10 @@ public class Comment {
     }
     public void setPost(Post post) {
         this.post = post;
+        post.getComments().add(this);
+    }
+    public void deletePost(Post post) {
+        post.getComments().remove(this);
     }
 
     //==비즈니스
@@ -56,6 +60,7 @@ public class Comment {
         this.commentDate = LocalDateTime.now();
         return this;
     }
+
 
 
 }
