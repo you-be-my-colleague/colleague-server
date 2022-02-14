@@ -26,6 +26,7 @@ public class Post {
     private String title;
 
     @Column(nullable = false)
+    @Lob
     private String content;
 
     @Embedded
@@ -104,13 +105,11 @@ public class Post {
 
     //==연관관계 메서드
     public void addComment(Comment comment) {
-        this.comments.add(comment);
         comment.setPost(this);
         this.commentCount += 1;
     }
     public void deleteComment(Comment deleteComment) {
-        this.comments.remove(deleteComment);
-        deleteComment.setPost(null);
+        deleteComment.deletePost(this);
         this.commentCount -= 1;
     }
 
