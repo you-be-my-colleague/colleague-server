@@ -1,5 +1,5 @@
 package youBeMyColleague.study.domain;
 
-public enum recruitmentStatus {
+public enum RecruitmentStatus {
     COMPLETE,CONTINUE
 }
