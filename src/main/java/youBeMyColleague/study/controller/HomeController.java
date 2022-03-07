@@ -32,6 +32,10 @@ public class HomeController {
                 .collect(Collectors.toList())), HttpStatus.OK);
     }
 
+    public void test() {
+
+    }
+
 
 }
 

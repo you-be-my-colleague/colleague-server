@@ -24,7 +24,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:${version}")
+	//implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:${version}")
 	implementation 'org.projectlombok:lombok:1.18.22'
 	implementation 'org.json:json:20210307'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
